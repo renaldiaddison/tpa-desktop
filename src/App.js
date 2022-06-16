@@ -21,14 +21,12 @@ function App() {
   }
 
   return (
-    <BrowserRouter>
       <div className="h-screen">
         <Routes>
           <Route exact path='*' element={<Layout />} />
           <Route exact path='/home' element={<Home />} />
         </Routes>
       </div>
-    </BrowserRouter>
     // <AddWorkSpace />
   )
 }
