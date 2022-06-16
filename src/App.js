@@ -12,7 +12,7 @@ function App() {
     return (
       <div className='h-full flex justify-center items-center'>
         <Routes>
-          <Route exact path='/login' element={<Login/>}/>
+          <Route exact path='/' element={<Login/>}/>
           <Route exact path='/register' element={<Register/>}/>
         </Routes>
       </div>
@@ -22,15 +22,11 @@ function App() {
   return (
     <BrowserRouter>
       <div className="h-screen">
-        <Navbar />
+        {/* <Navbar /> */}
         <Routes>
           <Route exact path='*' element={<Layout />}/>
-          <Route exact path='/' element={<Home/>}/>
+          <Route exact path='/home' element={<Home/>}/>
         </Routes>
-
-        {/* <div className="h-full flex justify-center items-center"> */}
-          {/* <Login />
-        </div> */}
       </div>
     </BrowserRouter>
   )

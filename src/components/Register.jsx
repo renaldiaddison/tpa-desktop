@@ -27,7 +27,7 @@ const Register = () => {
 
   return (
     <div className="w-full max-w-md border-2 item-center shadow-md rounded">
-      <p className='py-6 px-8 text-center text-2xl font-bold border-2 justify-between items-center'>
+      <p className='py-6 px-8 text-center text-2xl font-bold border-b-2 justify-between items-center'>
         Register
       </p>
       <form action='' onSubmit={signUp} className="bg-white rounded px-8 pt-6 pb-6 mb-4">
@@ -64,7 +64,7 @@ const Register = () => {
                 Already a member?
             </p>
             <p className="align-baseline font-bold text-blue-500 hover:text-blue-800">
-              <Link to='/login'>Login here</Link>
+              <Link to='/'>Login here</Link>
             </p>
           </div>
         </div>
