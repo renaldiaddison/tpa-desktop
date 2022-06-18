@@ -1,17 +1,19 @@
 import React from 'react'
 import { app } from '../firebase-config';
-import { Link } from 'react-router-dom';
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { Link, useNavigate } from 'react-router-dom';
+import { getAuth, signInWithEmailAndPassword, signOut } from "firebase/auth";
 
 const Login = () => {
 
   const auth = getAuth();
+  const navigate = useNavigate();
+
   function signIn(e) {
     e.preventDefault();
     signInWithEmailAndPassword(auth, e.target.email.value, e.target.password.value)
     .then((userCredential) => {
       const user = userCredential.user;
-      console.log('masuk');
+      navigate("/home");
     })
     .catch((error) => {
       const errorCode = error.code;
