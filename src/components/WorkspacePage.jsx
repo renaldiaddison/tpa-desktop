@@ -3,7 +3,7 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import Navbar from './Navbar'
 import Sidebar from './Sidebar'
-import ErrorPage from './ErrorPage'
+import Board from './Board'
 
 const Home = () => {
 
@@ -20,7 +20,11 @@ const Home = () => {
     <div>
       <Navbar />
       <div className="flex w-screen h-[90vh]">
-        <Sidebar />
+        <div className="fixed flex">
+          <Sidebar />
+          <Board />
+        </div>
+        
         
       </div>
       

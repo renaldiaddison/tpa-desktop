@@ -56,7 +56,7 @@ const Navbar = () => {
 
   return (
     <div className="relative bg-white">
-      <div className="flex w-screen justify-between items-center h-[10vh] mx-auto px-10 border-b-2">
+      <div className="flex  h-[10vh] w-screen justify-between items-center mx-auto px-10 border-b-2">
         <h1 className="w-full text-3xl font-bold">CHello</h1>
         <ul className="flex">
           <li className="p-4 hover:underline">

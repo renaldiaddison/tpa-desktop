@@ -4,9 +4,6 @@ import { useEffect, useState } from 'react'
 import { db } from '../firebase-config'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 
-// const auth = getAuth()
-// var userID
-
 const AddWorkSpace = ({ closeModal }) => {
   const workspaceRef = collection(db, 'workspace')
 

@@ -1,9 +1,9 @@
 import { app } from './firebase-config';
-import Navbar from './components/Navbar';
 import Login from './components/Login';
 import Home from './components/Home';
 import Register from './components/Register';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import WorkspacePage from './components/WorkspacePage';
+import { Routes, Route } from 'react-router-dom';
 
 
 function App() {
@@ -23,6 +23,7 @@ function App() {
     <div className="h-screen">
       <Routes>
         <Route exact path='*' element={<Layout />} />
+        <Route exact path='/home/workspace/:id' element={<WorkspacePage />}></Route>
         <Route exact path='/home' element={<Home />} />
       </Routes>
     </div>
