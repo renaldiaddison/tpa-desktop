@@ -22,7 +22,6 @@ const Register = () => {
     else {
       console.log('salah');
     }
-
   }
 
   return (

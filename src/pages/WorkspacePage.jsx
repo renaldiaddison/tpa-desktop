@@ -1,9 +1,9 @@
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import Navbar from './Navbar'
-import Sidebar from './Sidebar'
-import Board from './Board'
+import Navbar from '../components/Navbar'
+import Sidebar from '../components/Sidebar'
+import Board from './BoardPage'
 
 const Home = () => {
 
@@ -24,10 +24,7 @@ const Home = () => {
           <Sidebar />
           <Board />
         </div>
-        
-        
       </div>
-      
     </div>
 
   )

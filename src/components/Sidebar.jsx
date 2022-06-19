@@ -16,7 +16,7 @@ const Sidebar = () => {
 
   return (
 
-    <div className="min-w-[270px] ml-[-2px] h-[90vh] overflow-y-auto overflow-x-hidden" >
+    <div className="min-w-[270px] ml-[-2px] h-[90vh] overflow-y-auto overflow-x-hidden border-x-2" >
       <div className="p-6 text-center bg-white">
         <div className="text-xl">
           <div className="flex items-center rounded-md">

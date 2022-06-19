@@ -1,8 +1,8 @@
 import { app } from './firebase-config';
 import Login from './components/Login';
-import Home from './components/Home';
+import Home from './pages/Home';
 import Register from './components/Register';
-import WorkspacePage from './components/WorkspacePage';
+import WorkspacePage from './pages/WorkspacePage';
 import { Routes, Route } from 'react-router-dom';
 
 

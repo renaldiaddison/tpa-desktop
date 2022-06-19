@@ -1,6 +1,5 @@
-import { async } from '@firebase/util'
 import { addDoc, collection } from 'firebase/firestore'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { db } from '../firebase-config'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 
