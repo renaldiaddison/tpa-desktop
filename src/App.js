@@ -4,7 +4,6 @@ import Login from './components/Login';
 import Home from './components/Home';
 import Register from './components/Register';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import AddWorkSpace from './components/AddWorkspace';
 
 
 function App() {
@@ -21,13 +20,12 @@ function App() {
   }
 
   return (
-      <div className="h-screen">
-        <Routes>
-          <Route exact path='*' element={<Layout />} />
-          <Route exact path='/home' element={<Home />} />
-        </Routes>
-      </div>
-    // <AddWorkSpace />
+    <div className="h-screen">
+      <Routes>
+        <Route exact path='*' element={<Layout />} />
+        <Route exact path='/home' element={<Home />} />
+      </Routes>
+    </div>
   )
 }
 

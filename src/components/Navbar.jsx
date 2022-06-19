@@ -37,7 +37,7 @@ const Navbar = () => {
   }
 
   const handleDropdown = () => {
-    if(profileDropdown === true) {
+    if (profileDropdown === true) {
       setProfileDropdown(false)
     }
     else {
@@ -53,7 +53,7 @@ const Navbar = () => {
   //     </button>
   //   )
   // }
- 
+
   return (
     <div className="relative bg-white">
       <div className="flex w-screen justify-between items-center h-[10vh] mx-auto px-10 border-b-2">
@@ -73,8 +73,8 @@ const Navbar = () => {
           <div onClick={handleDropdown}>
             <button type="button" class="bg-gray-500 flex text-sm rounded-full text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-300 focus:ring-white" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
               <span class="sr-only">Open user menu</span>
-                <img class="h-8 w-8 rounded-full" src="https://images.unsplash.com/photo-1517365830460-955ce3ccd263?ixlib=rb-1.2.1&ixqx=nkXPoOrIl0&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=256&h=256&q=80" alt=""></img>
-              </button>
+              <img class="h-8 w-8 rounded-full" src="https://images.unsplash.com/photo-1517365830460-955ce3ccd263?ixlib=rb-1.2.1&ixqx=nkXPoOrIl0&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=256&h=256&q=80" alt=""></img>
+            </button>
           </div>
           {profileDropdown ? returnDropdown() : null}
         </div>

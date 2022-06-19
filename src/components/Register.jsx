@@ -1,6 +1,6 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import React from 'react'
+import { Link } from 'react-router-dom'
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth"
 
 
 
@@ -9,15 +9,15 @@ const Register = () => {
   const auth = getAuth();
   function signUp(e) {
     e.preventDefault();
-    if(e.target.password.value === e.target.confPassword.value) {
+    if (e.target.password.value === e.target.confPassword.value) {
       createUserWithEmailAndPassword(auth, e.target.email.value, e.target.password.value)
-      .then((userCredential) => {
-      const user = userCredential.user;
-      })
-      .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-    });
+        .then((userCredential) => {
+          const user = userCredential.user;
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+        });
     }
     else {
       console.log('salah');
@@ -57,11 +57,11 @@ const Register = () => {
         </div>
         <div className="items-center justify-between">
           <button className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline" type="submit">
-            Register
+          <Link to='/home'>Register</Link>
           </button>
           <div className='flex text-sm justify-center pt-3'>
             <p className='mr-1'>
-                Already a member?
+              Already a member?
             </p>
             <p className="align-baseline font-bold text-blue-500 hover:text-blue-800">
               <Link to='/'>Login here</Link>
