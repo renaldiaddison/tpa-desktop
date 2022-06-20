@@ -26,13 +26,13 @@ const Sidebar = () => {
               <svg className="h-5 w-5 text-slate-400"  width="24" height="24" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">  <path stroke="none" d="M0 0h24v24H0z"/>  <circle cx="10" cy="10" r="7" />  <line x1="21" y1="21" x2="15" y2="15" /></svg>
               <input className="text-[15px] ml-2 w-full bg-transparent focus:outline-none" placeholder="Search" />
             </div>
-            <div className=" p-2.5 mt-4 flex items-center rounded-md cursor-pointer hover:bg-gray-400">
+            <div className=" p-2.5 mt-4 flex items-center rounded-md cursor-pointer hover:bg-gray-400 hover:text-white">
               <span className="text-[15px] ml-4">Boards</span>
             </div>
-            <div className="p-2.5 mt-4 flex items-center rounded-md cursor-pointer hover:underline">
+            <div className="p-2.5 mt-4 flex items-center rounded-md cursor-pointer hover:bg-gray-400 hover:text-white">
               <span className="text-[15px] ml-4">Lists</span>
             </div>
-            <div className="p-2.5 mt-4 mb-6 flex items-center rounded-md cursor-pointer hover:underline">
+            <div className="p-2.5 mt-4 mb-6 flex items-center rounded-md cursor-pointer hover:bg-gray-400 hover:text-white">
               <span className="text-[15px] ml-4">Cards</span>
             </div>
             <div className="border-t border-slate-500"></div>

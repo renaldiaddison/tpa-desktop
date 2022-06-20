@@ -4,6 +4,7 @@ import Home from './pages/Home';
 import Register from './components/Register';
 import WorkspacePage from './pages/WorkspacePage';
 import { Routes, Route } from 'react-router-dom';
+import BoardPage from './pages/BoardPage';
 
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
       <Routes>
         <Route exact path='*' element={<Layout />} />
         <Route exact path='/home/workspace/:id' element={<WorkspacePage />}></Route>
+        <Route exact path='/home/board/:id' element={<BoardPage />}></Route>
         <Route exact path='/home' element={<Home />} />
       </Routes>
     </div>

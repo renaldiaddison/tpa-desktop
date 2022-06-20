@@ -3,7 +3,7 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import Sidebar from '../components/Sidebar'
-import Board from './BoardPage'
+import Board from '../components/Board'
 
 const Home = () => {
 

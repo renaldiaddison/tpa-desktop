@@ -8,7 +8,6 @@ const BoardModal = ({ closeModal }) => {
   const boardRef = collection(db, 'board')
   
   useEffect(() => {
-    console.log("awkdoawkdwa")
     const addForm = document.querySelector('.addBoard')
     addForm.addEventListener('submit', (e) => {
       e.preventDefault()

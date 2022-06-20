@@ -1,42 +1,33 @@
-import { collection, onSnapshot, query, where } from 'firebase/firestore';
-import React, { useEffect , useState } from 'react'
-import { useParams, useLocation } from 'react-router-dom';
-import { db } from '../firebase-config';
-import AddBoard from '../components/AddBoard'
+import { getAuth, onAuthStateChanged } from 'firebase/auth'
+import React from 'react'
+import { useNavigate } from 'react-router-dom'
+import List from '../components/List'
+import Navbar from '../components/Navbar'
+import Sidebar from '../components/Sidebar'
 
-const Board = () => {
-  const p = useParams();
-  const boardRef = collection(db, 'board')
-  const [boardList, setBoardList] = useState([])
-  const location = useLocation();
+const BoardPage = () => {
 
-  useEffect(() => {
-    const q = query(boardRef, where("workspaceId", "==", p.id))
-    const onSubsribe = onSnapshot(q, (snapshot) => {
-      setBoardList(snapshot.docs.map((doc) => doc))
-    })
-    return () => onSubsribe()
-  }, [location])
+  const navigate = useNavigate()
+
+  const auth = getAuth();
+  onAuthStateChanged(auth, (user) => {
+    if (!user) {
+      navigate("/")
+    }
+  })
+
 
   return (
-    <div className="h-[90vh]  overflow-y-auto">
-      <div className="flex flex-wrap">
-        {boardList.map((board) => {
-          return (
-            <div key={board.id} class="w-[300px] h-[170px] rounded-xl overflow-hidden shadow-lg m-6 border">
-              <div class="px-6 py-4">
-                <div class="font-bold text-xl mb-2">{board.data().name}</div>
-                <p class="text-gray-700 text-base">
-                  {board.data().description}
-                </p>
-              </div>
-            </div>
-          )
-        })}
-        <AddBoard />
+    <div>
+      <Navbar />
+      <div className="flex w-screen h-[90vh]">
+        <div className="fixed flex">
+          <Sidebar />
+          <List/>
+        </div>
       </div>
     </div>
   )
 }
 
-export default Board
+export default BoardPage
