@@ -28,7 +28,7 @@ const List = () => {
       <div className="flex flex-wrap">
         {lists.map((list) => {
           return (
-            <div key={list.id} className="w-[260px] h-[150px] rounded-xl overflow-hidden shadow-lg m-6 border">
+            <div key={list.id} className="w-[260px] min-h-[150px] rounded-xl overflow-hidden shadow-lg m-6 border">
               <NewList listId = {list.id} listTitle = {list.data().title} listDesc = {list.data().description}/>
             </div>
           )

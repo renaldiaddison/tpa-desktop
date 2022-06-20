@@ -1,6 +1,5 @@
-import userEvent from '@testing-library/user-event'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
-import { collection, getDocs, onSnapshot, query, where } from 'firebase/firestore'
+import { collection, onSnapshot, query, where } from 'firebase/firestore'
 import React, { useEffect, useRef, useState } from 'react'
 import { db } from '../firebase-config'
 import { Link, useLocation } from 'react-router-dom'
