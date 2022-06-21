@@ -25,7 +25,7 @@ const BoardModal = ({ closeModal }) => {
         name: addForm.boardName.value,
         description: addForm.boardDescription.value,
         adminId: [userID],
-        memberId: ["member"],
+        memberId: [],
         workspaceId: p.id,
       })
       closeModal(false)

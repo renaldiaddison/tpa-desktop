@@ -6,6 +6,7 @@ import WorkspacePage from './pages/WorkspacePage';
 import { Routes, Route } from 'react-router-dom';
 import BoardPage from './pages/BoardPage';
 import { ToastContainer } from 'react-toastify';
+import AcceptInvite from './pages/AcceptInvite';
 
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
         <Route exact path='*' element={<Layout />} />
         <Route exact path='/home/workspace/:id' element={<WorkspacePage />}></Route>
         <Route exact path='/home/board/:id' element={<BoardPage />}></Route>
+        <Route exact path='/invite-link/:id' element={<AcceptInvite/>}></Route>
         <Route exact path='/home' element={<Home />} />
       </Routes>
     </div>

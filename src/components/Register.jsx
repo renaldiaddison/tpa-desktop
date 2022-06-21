@@ -1,10 +1,28 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth"
+import { addDoc, collection } from 'firebase/firestore'
+import { db } from '../firebase-config'
 
 
 
 const Register = () => {
+
+  const userRef = collection(db, "user")
+
+  const navigate = useNavigate()
+
+  const insertUser = async (user, name) => {
+    await addDoc(userRef, {
+      userId: user.uid,
+      displayName: name,
+      photoUrl: "https://picsum.photos/id/237/200/300",
+      about: "",
+      education: "",
+      email: user.email,
+      notification: true,
+    });
+  }
 
   const auth = getAuth();
   function signUp(e) {
@@ -13,6 +31,8 @@ const Register = () => {
       createUserWithEmailAndPassword(auth, e.target.email.value, e.target.password.value)
         .then((userCredential) => {
           const user = userCredential.user;
+          insertUser(user, e.target.name.value)
+          navigate('/home')
         })
         .catch((error) => {
           const errorCode = error.code;
