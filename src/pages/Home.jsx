@@ -21,7 +21,6 @@ const Home = () => {
       <div className="flex w-screen h-[90vh]">
         <Sidebar />
       </div>
-      
     </div>
 
   )

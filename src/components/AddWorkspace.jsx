@@ -24,7 +24,7 @@ const AddWorkSpace = ({ closeModal }) => {
         description: addForm.workspaceDescription.value,
         memberId: ["test"],
         adminId: [userID],
-        visibility: "public"
+        visibility: addForm.visibility.value
       })
       closeModal(false)
     })
@@ -42,11 +42,25 @@ const AddWorkSpace = ({ closeModal }) => {
             <form className="addWorkspace space-y-6">
               <div>
                 <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Workspace Name</label>
-                <input type="text" className="border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-600 dark:text-white" placeholder="Workspace Name" name="workspaceName" required></input>
+                <input autoComplete="off" spellCheck="false" type="text" className="border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-600 dark:text-white focus:outline-none" placeholder="Workspace Name" name="workspaceName" required></input>
               </div>
               <div>
                 <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Workspace Description</label>
-                <textarea type="text" placeholder="Workspace Description" className="border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:border-gray-500 dark:text-white min-h-[200px] max-h-[300px]" name="workspaceDescription" required></textarea>
+                <textarea autoComplete="off" spellCheck="false" type="text" placeholder="Workspace Description" className="border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:border-gray-500 dark:text-white min-h-[200px] max-h-[200px] focus:outline-none" name="workspaceDescription" required></textarea>
+              </div>
+              <div>
+                <label htmlFor="visibility" className="block mb-2 text-sm font-medium text-gray-900">
+                  Visibility
+                </label>
+                <select
+                  id="visibility"
+                  name="visibility"
+                  className="mt-1 block w-full pl-2 pr-10 py-2 text-base border-2 border-gray-300 focus:outline-none sm:text-sm rounded-md"
+                  defaultValue="Public"
+                >
+                  <option>Public</option>
+                  <option>Private</option>
+                </select>
               </div>
               <button className="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-3 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Create Workspace</button>
             </form>

@@ -44,11 +44,11 @@ const BoardModal = ({ closeModal }) => {
             <form className="addBoard space-y-6">
               <div>
                 <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Board Name</label>
-                <input type="text" className="border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-600 dark:text-white" placeholder="Board Name" name="boardName" required></input>
+                <input autoComplete="off" spellCheck="false" type="text" className="border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-600 dark:text-white focus:outline-none" placeholder="Board Name" name="boardName" required></input>
               </div>
               <div>
                 <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Board Description</label>
-                <textarea type="text" placeholder="Board Description" className="border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:border-gray-500 dark:text-white min-h-[200px] max-h-[300px]" name="boardDescription" required></textarea>
+                <textarea autoComplete="off" spellCheck="false" type="text" placeholder="Board Description" className="border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:border-gray-500 dark:text-white min-h-[200px] max-h-[200px] focus:outline-none" name="boardDescription" required></textarea>
               </div>
               <button className="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-3 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Create Board</button>
             </form>

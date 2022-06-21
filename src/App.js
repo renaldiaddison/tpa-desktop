@@ -5,6 +5,7 @@ import Register from './components/Register';
 import WorkspacePage from './pages/WorkspacePage';
 import { Routes, Route } from 'react-router-dom';
 import BoardPage from './pages/BoardPage';
+import { ToastContainer } from 'react-toastify';
 
 
 function App() {
@@ -20,8 +21,10 @@ function App() {
     )
   }
 
+
   return (
     <div className="h-screen">
+      <ToastContainer></ToastContainer>
       <Routes>
         <Route exact path='*' element={<Layout />} />
         <Route exact path='/home/workspace/:id' element={<WorkspacePage />}></Route>

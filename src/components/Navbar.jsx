@@ -46,10 +46,10 @@ const Navbar = () => {
   }
 
   return (
-      <div className="h-[55px]">
-        <div className="fixed bg-white flex w-screen justify-between items-center px-10 border-b-2">
-          <h1 className="w-full text-3xl font-bold">CHello</h1>
-          <ul className="flex">
+      <div className="h-[65px]">
+        <div className="fixed h-[65px] bg-white flex w-screen justify-between items-center px-10 border-b-2">
+          <h1 className="w-full text-3xl font-bold cursor-pointer"><Link to={"/home"}>CHello</Link></h1>
+          {/* <ul className="flex">
             <li className="p-4 hover:underline">
               <Link to="/">Home</Link>
             </li>
@@ -59,8 +59,8 @@ const Navbar = () => {
             <li className="p-4 hover:underline">
               <Link to="/">About</Link>
             </li>
-          </ul>
-          <div className="ml-4 relative flex-shrink-0">
+          </ul> */}
+          <div className="profile px-5">
             <div onClick={handleDropdown}>
               <button type="button" className="bg-gray-500 flex text-sm rounded-full text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-300 focus:ring-white" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
                 <span className="sr-only">Open user menu</span>

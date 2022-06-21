@@ -1,10 +1,9 @@
 import { doc, setDoc, updateDoc } from 'firebase/firestore'
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useRef } from 'react'
-import { useState } from 'react'
 import { db } from '../firebase-config'
 
-const CardModal = ({ closeModal, cardId }) => {
+const UpdateCardModal = ({ closeModal, cardId }) => {
 
     const refTitle = useRef()
     const updateCard = async () => {
@@ -48,4 +47,4 @@ const CardModal = ({ closeModal, cardId }) => {
     )
 }
 
-export default CardModal
+export default UpdateCardModal
