@@ -20,10 +20,8 @@ const Home = () => {
     <div>
       <Navbar />
       <div className="flex w-screen h-[90vh]">
-        <div className="fixed flex">
           <Sidebar />
           <Board />
-        </div>
       </div>
     </div>
 

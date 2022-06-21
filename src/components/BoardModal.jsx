@@ -1,3 +1,4 @@
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { addDoc, collection } from 'firebase/firestore';
 import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom';
@@ -6,6 +7,15 @@ import { db } from '../firebase-config';
 const BoardModal = ({ closeModal }) => {
   const p = useParams()
   const boardRef = collection(db, 'board')
+
+  const auth = getAuth();
+  let userID = "";
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      const uid = user.uid
+      userID = uid
+    }
+  })
   
   useEffect(() => {
     const addForm = document.querySelector('.addBoard')
@@ -14,6 +24,8 @@ const BoardModal = ({ closeModal }) => {
       addDoc(boardRef, {
         name: addForm.boardName.value,
         description: addForm.boardDescription.value,
+        adminId: [userID],
+        memberId: ["member"],
         workspaceId: p.id,
       })
       closeModal(false)

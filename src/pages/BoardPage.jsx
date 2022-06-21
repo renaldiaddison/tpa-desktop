@@ -21,10 +21,8 @@ const BoardPage = () => {
     <div>
       <Navbar />
       <div className="flex w-screen h-[90vh]">
-        <div className="fixed flex">
           <Sidebar />
           <List/>
-        </div>
       </div>
     </div>
   )

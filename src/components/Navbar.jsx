@@ -45,41 +45,33 @@ const Navbar = () => {
     }
   }
 
-  // const returnButton = () => {
-  //   return (
-  //     <button
-  //       className="m-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
-  //       <Link to="/">Login</Link>
-  //     </button>
-  //   )
-  // }
-
   return (
-    <div className="relative bg-white">
-      <div className="flex  h-[10vh] w-screen justify-between items-center mx-auto px-10 border-b-2">
-        <h1 className="w-full text-3xl font-bold">CHello</h1>
-        <ul className="flex">
-          <li className="p-4 hover:underline">
-            <Link to="/">Home</Link>
-          </li>
-          <li className="p-4 hover:underline">
-            <Link to="/">Workspace</Link>
-          </li>
-          <li className="p-4 hover:underline">
-            <Link to="/">About</Link>
-          </li>
-        </ul>
-        <div className="ml-4 relative flex-shrink-0">
-          <div onClick={handleDropdown}>
-            <button type="button" className="bg-gray-500 flex text-sm rounded-full text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-300 focus:ring-white" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
-              <span className="sr-only">Open user menu</span>
-              <img className="h-8 w-8 rounded-full" src="https://images.unsplash.com/photo-1517365830460-955ce3ccd263?ixlib=rb-1.2.1&ixqx=nkXPoOrIl0&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=256&h=256&q=80" alt=""></img>
-            </button>
+      <div className="h-[55px]">
+        <div className="fixed bg-white flex w-screen justify-between items-center px-10 border-b-2">
+          <h1 className="w-full text-3xl font-bold">CHello</h1>
+          <ul className="flex">
+            <li className="p-4 hover:underline">
+              <Link to="/">Home</Link>
+            </li>
+            <li className="p-4 hover:underline">
+              <Link to="/">Workspace</Link>
+            </li>
+            <li className="p-4 hover:underline">
+              <Link to="/">About</Link>
+            </li>
+          </ul>
+          <div className="ml-4 relative flex-shrink-0">
+            <div onClick={handleDropdown}>
+              <button type="button" className="bg-gray-500 flex text-sm rounded-full text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-300 focus:ring-white" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+                <span className="sr-only">Open user menu</span>
+                <img className="h-8 w-8 rounded-full" src="https://images.unsplash.com/photo-1517365830460-955ce3ccd263?ixlib=rb-1.2.1&ixqx=nkXPoOrIl0&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=256&h=256&q=80" alt=""></img>
+              </button>
+            </div>
+            {profileDropdown ? returnDropdown() : null}
           </div>
-          {profileDropdown ? returnDropdown() : null}
         </div>
       </div>
-    </div>
+
   )
 }
 

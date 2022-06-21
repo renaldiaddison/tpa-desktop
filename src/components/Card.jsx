@@ -3,6 +3,8 @@ import { collection, onSnapshot, query, where } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom';
 import { db } from '../firebase-config';
+import CardModel from './CardModel';
+import UpdateCardModal from './UpdateCardModal';
 
 const Card = ({ listId }) => {
 
@@ -12,28 +14,19 @@ const Card = ({ listId }) => {
     const location = useLocation()
 
     useEffect(() => {
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                const q = query(cardRef, where("listId", "==", listId))
-                onSnapshot(q, (snapshot) => {
-                    setCardList(snapshot.docs.map((doc) => doc))
-                })
-
-            }
+        const q = query(cardRef, where("listId", "==", listId))
+        const unSubscribe = onSnapshot(q, (snapshot) => {
+            setCardList(snapshot.docs.map((doc) => doc))
         })
 
-
-    }, [location])
+        return () => unSubscribe()
+    }, [])
 
     return (
         <div>
             {cardList.map((card) => {
                 return (
-                    <div key = {card.id} className="items-center rounded-none mt-2 group">
-                        <input spellCheck="false" className="w-full px-1 text-base text-black outline-none" defaultValue={card.data().title}>
-
-                        </input>
-                    </div>
+                    <CardModel key={card.id} card={card} />
                 )
             })}
 
