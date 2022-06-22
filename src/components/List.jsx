@@ -60,16 +60,16 @@ const List = () => {
     <DragDropContext onDragEnd={(result) => {
       onDragEnd(result, lists, setLists);
     }}>
-        <div className="flex overflow-x-auto">
-          {lists.map((list) => {
-            return (
-              <div key={list.id} className="min-w-fit min-h-[150px] rounded-xl overflow-hidden shadow-lg m-6 border">
-                <NewList listId={list.id} listTitle={list.data().title} listDesc={list.data().description} />
-              </div>
-            )
-          })}
-          <AddList />
-        </div>
+      <div className="flex overflow-x-auto overflow-y-auto">
+        {lists.map((list) => {
+          return (
+            <div key={list.id} className="min-w-fit min-h-[150px] rounded-xl overflow-x-hidden shadow-lg m-6 border">
+              <NewList listId={list.id} listTitle={list.data().title} listDesc={list.data().description} />
+            </div>
+          )
+        })}
+        <AddList />
+      </div>
     </DragDropContext>
   )
 }
