@@ -1,4 +1,4 @@
-import { addDoc, collection } from 'firebase/firestore'
+import { addDoc, arrayUnion, collection, doc, getDocs, query, updateDoc, where } from 'firebase/firestore'
 import { useEffect } from 'react'
 import { db } from '../firebase-config'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
@@ -19,17 +19,20 @@ const AddWorkSpace = ({ closeModal }) => {
     const addForm = document.querySelector('.addWorkspace')
     addForm.addEventListener('submit', (e) => {
       e.preventDefault()
-      addDoc(workspaceRef, {
+      const doc = addDoc(workspaceRef, {
         name: addForm.workspaceName.value,
         description: addForm.workspaceDescription.value,
         memberId: ["test"],
         adminId: [userID],
         visibility: addForm.visibility.value
       })
+
       closeModal(false)
     })
-  })
 
+
+  })
+  
   return (
     <div tabIndex="-1" aria-hidden="true" className="fixed overflow-y-auto overflow-x-hidden w-full md:inset-0 md:h-full bg-gray-500 bg-opacity-30 h-full flex justify-center items-center">
       <div className="fixed p-4 w-full max-w-2xl h-full md:h-auto">

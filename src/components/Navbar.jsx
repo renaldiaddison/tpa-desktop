@@ -28,10 +28,10 @@ const Navbar = () => {
 
   const returnDropdown = () => {
     return (
-      <div ref={menuRef} className="origin-top-right absolute z-10 right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none border-2" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
-        <p className="cursor-pointer block px-4 py-2 text-sm text-gray-700 hover:underline" role="menuitem" tabindex="-1" id="user-menu-item-0">View Profile</p>
-        {/* <p className="cursor-pointer block px-4 py-2 text-sm text-gray-700 hover:underline" role="menuitem" tabindex="-1" id="user-menu-item-1">Settings</p> */}
-        <p onClick={logOut} className="cursor-pointer block px-4 py-2 text-sm text-red-600 hover:underline" role="menuitem" tabindex="-1" id="user-menu-item-2">Logout</p>
+      <div ref={menuRef} className="origin-top-right absolute z-10 right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none border-2" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabIndex="-1">
+        <p className="cursor-pointer block px-4 py-2 text-sm text-gray-700 hover:underline" role="menuitem" tabIndex="-1" id="user-menu-item-0">View Profile</p>
+        {/* <p className="cursor-pointer block px-4 py-2 text-sm text-gray-700 hover:underline" role="menuitem" tabIndex="-1" id="user-menu-item-1">Settings</p> */}
+        <p onClick={logOut} className="cursor-pointer block px-4 py-2 text-sm text-red-600 hover:underline" role="menuitem" tabIndex="-1" id="user-menu-item-2">Logout</p>
       </div>
     )
   }

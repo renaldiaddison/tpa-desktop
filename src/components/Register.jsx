@@ -21,6 +21,7 @@ const Register = () => {
       education: "",
       email: user.email,
       notification: true,
+      workspace: []
     });
   }
 
