@@ -20,7 +20,7 @@ const BoardPage = () => {
   return (
     <div>
       <Navbar />
-      <div className="flex w-screen h-[90vh]">
+      <div className="flex w-screen h-[90vh] overflow-clip">
           <Sidebar />
           <List/>
       </div>

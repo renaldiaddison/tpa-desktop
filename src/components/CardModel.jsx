@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import UpdateCardModal from './UpdateCardModal'
 
-const CardModel = ({ card }) => {
+const   CardModel = ({ card }) => {
 
     
 

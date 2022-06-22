@@ -3,7 +3,7 @@ import { arrayUnion, doc, updateDoc } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { db } from '../firebase-config';
-import { toastError } from '../Script/Toast';
+import { toastError, toastSuccess } from '../Script/Toast';
 import { getWorkspaceById } from '../Script/Workspace';
 
 const AcceptInvite = () => {
@@ -16,14 +16,15 @@ const AcceptInvite = () => {
 
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
-        userId = user.uid
         if (!user) {
             navigate("/")
+            toastError("You need to login to join a workspace")
         }
         if(ws.adminId.includes(user.uid) || ws.memberId.includes(user.uid)) {
-            navigate("/home/workspace/" + p.id)
+            navigate("/home")
             toastError("You already in the workspace")
         }
+        userId = user.uid
     })
 
     useEffect(() => {
@@ -39,6 +40,8 @@ const AcceptInvite = () => {
         await updateDoc(workspaceDoc, {
             memberId: arrayUnion(userId)
         })
+        navigate("/home/workspace/" + p.id)
+        toastSuccess("Successfully join workspace")
     }
 
     return (
