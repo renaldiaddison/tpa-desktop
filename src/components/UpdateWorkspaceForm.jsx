@@ -18,7 +18,6 @@ const UpdateWorkspaceForm = ({ closeSettings }) => {
     const [vis, setVis] = useState([])
 
     const updateWorkspace = async () => {
-        
         const listDoc = doc(db, "workspace", p.id)
         const newField = { name: refName.current.value, description: refDesc.current.value, visibility: vis.value }
         await updateDoc(listDoc, newField)
