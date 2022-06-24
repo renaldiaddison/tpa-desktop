@@ -20,10 +20,12 @@ const Board = () => {
   const [showInvite, setShowInvite] = useState(false)
   const [showDelete, setShowDelete] = useState(false)
   const [showLeave, setShowLeave] = useState(false)
+
   let role = ""
 
   const [member, setMember] = useState([])
   const [admin, setAdmin] = useState([])
+  const [wsName, setWsName] = useState("")
 
   const addMember = (newMember) => {
     setMember((oldArray) => [...oldArray, newMember]);
@@ -43,6 +45,7 @@ const Board = () => {
     const q2 = query(workspaceRef, where(documentId(), "==", p.id))
     const onSubscribe2 = onSnapshot(q2, (snapshot) => {
       if (snapshot.docs[0]) {
+        setWsName(snapshot.docs[0].data().name)
         snapshot.docs[0].data().memberId.map((memberId) => {
           const q3 = query(userRef, where("userId", "==", memberId));
           setMember([])
@@ -59,6 +62,7 @@ const Board = () => {
     const q4 = query(workspaceRef, where(documentId(), "==", p.id))
     const onSubscribe3 = onSnapshot(q4, (snapshot) => {
       if (snapshot.docs[0]) {
+        setWsName(snapshot.docs[0].data().name)
         snapshot.docs[0].data().adminId.map((adminId) => {
           const q5 = query(userRef, where("userId", "==", adminId));
           setAdmin([])
@@ -206,7 +210,7 @@ const Board = () => {
       </div> : null}
 
       {showSettings && <UpdateWorkspaceForm closeSettings={setShowSettings} />}
-      {showInvite && <InviteWorkspace closeSettings={setShowInvite} />}
+      {showInvite && <InviteWorkspace closeSettings={setShowInvite} admin={admin} member={member} wsName={wsName} />}
       {showDelete && <DeleteWorkspace closeDelete={setShowDelete} />}
     </div>
   )

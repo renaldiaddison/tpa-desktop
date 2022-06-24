@@ -18,7 +18,7 @@ const Home = () => {
 
   return (
     <div>
-      <Navbar />
+      <Navbar/>
       <div className="flex w-screen h-[90vh]">
         <Sidebar />
         <PublicWorkspace />

@@ -22,7 +22,7 @@ const AddWorkSpace = ({ closeModal }) => {
       const doc = addDoc(workspaceRef, {
         name: addForm.workspaceName.value,
         description: addForm.workspaceDescription.value,
-        memberId: ["test"],
+        memberId: [],
         adminId: [userID],
         visibility: addForm.visibility.value
       })

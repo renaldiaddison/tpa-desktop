@@ -7,6 +7,7 @@ import { Routes, Route } from 'react-router-dom';
 import BoardPage from './pages/BoardPage';
 import { ToastContainer } from 'react-toastify';
 import AcceptInvite from './pages/AcceptInvite';
+import { UserAuthContextProvider } from './Script/AuthContext';
 
 
 function App() {
@@ -26,6 +27,8 @@ function App() {
   return (
     <div className="h-screen">
       <ToastContainer></ToastContainer>
+      <UserAuthContextProvider>
+
       <Routes>
         <Route exact path='*' element={<Layout />} />
         <Route exact path='/home/workspace/:id' element={<WorkspacePage />}></Route>
@@ -33,6 +36,7 @@ function App() {
         <Route exact path='/invite-link/:id' element={<AcceptInvite/>}></Route>
         <Route exact path='/home' element={<Home />} />
       </Routes>
+      </UserAuthContextProvider>
     </div>
   )
 }
