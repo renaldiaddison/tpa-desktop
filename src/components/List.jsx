@@ -9,7 +9,6 @@ import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd"
 import { getAuth } from 'firebase/auth'
 
 const List = () => {
-
   const p = useParams()
   const boardRef = collection(db, 'board')
   const listRef = collection(db, 'list')

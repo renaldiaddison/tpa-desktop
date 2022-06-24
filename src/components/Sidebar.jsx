@@ -32,11 +32,11 @@ const Sidebar = () => {
                 <span className="text-[15px] ml-4">Workspace</span>
               </div>
             </Link>
-            <div className="p-2.5 mt-4 flex items-center rounded-md cursor-pointer hover:bg-gray-400 hover:text-white">
-              <span className="text-[15px] ml-4">Lists</span>
-            </div>
+            {/* <div className="p-2.5 mt-4 flex items-center rounded-md cursor-pointer hover:bg-gray-400 hover:text-white">
+              <span className="text-[15px] ml-4">Boards</span>
+            </div> */}
             <div className="p-2.5 mt-4 mb-6 flex items-center rounded-md cursor-pointer hover:bg-gray-400 hover:text-white">
-              <span className="text-[15px] ml-4">Cards</span>
+              <span className="text-[15px] ml-4">Boards</span>
             </div>
             <div className="border-t border-slate-500"></div>
             <div onClick={() => setShowModal(true)} className="p-2.5 mt-6 flex items-center rounded-none cursor-pointer" >
