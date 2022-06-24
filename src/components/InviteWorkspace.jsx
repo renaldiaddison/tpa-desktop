@@ -1,5 +1,5 @@
 import { getAuth } from 'firebase/auth'
-import { addDoc, collection, onSnapshot, query, where } from 'firebase/firestore'
+import { addDoc, arrayUnion, collection, doc, documentId, onSnapshot, query, updateDoc, where } from 'firebase/firestore'
 import React, { useEffect, useState } from 'react'
 import { useRef } from 'react'
 import { useParams } from 'react-router-dom'
@@ -8,7 +8,7 @@ import { db } from '../firebase-config'
 import { toastError } from '../Script/Toast'
 
 
-const InviteWorkspace = ({ closeSettings, admin, member, wsName}) => {
+const InviteWorkspace = ({ closeSettings, admin, member, wsName, invited }) => {
 
   const [options, setOptions] = useState([])
   const p = useParams()
@@ -35,7 +35,9 @@ const InviteWorkspace = ({ closeSettings, admin, member, wsName}) => {
   }, [])
 
   const insertOptions = () => {
-    const wsPeople = [...admin, ...member]
+    const wsPeop = [...admin, ...member]
+    const wsPeople = [...wsPeop, ...invited]
+    console.log(wsPeople)
     for (let i = 0; i < options.length; i++) {
       let valid = true;
       for (let j = 0; j < wsPeople.length; j++) {
@@ -55,11 +57,6 @@ const InviteWorkspace = ({ closeSettings, admin, member, wsName}) => {
     setLink('localhost:3000/invite-link/' + p.id)
   }
 
-  // const handleChange = (options) => {
-  //   console.log(options)
-  //   setSelectedOptions(options)
-  // }
-
   const sendNotif = (id) => {
     const notifRef = collection(db, "notification")
     return addDoc(notifRef, {
@@ -72,12 +69,22 @@ const InviteWorkspace = ({ closeSettings, admin, member, wsName}) => {
     })
   }
 
+  const updateInvitedWorkspace = async (id) => {
+    const listDoc = doc(db, "workspace", p.id)
+    await updateDoc(listDoc, {
+      invitedId: arrayUnion(id)
+    })
+  }
+
+
   const handleClick = () => {
     const invited = selectRef.current.getValue()
     console.log(invited)
 
+
     for (let i = 0; i < invited.length; i++) {
       const userId = invited[i].value
+      updateInvitedWorkspace(userId)
       sendNotif(userId)
     }
     closeSettings(false)

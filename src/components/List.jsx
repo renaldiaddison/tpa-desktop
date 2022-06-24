@@ -127,7 +127,7 @@ const List = () => {
   }
 
   return (
-    <div className="overflow-hidden">
+    <div className="overflow-hidden h-full ">
       <div className="flex pt-4 pl-6">
         <p className="font-bold text-xl pr-2">Manage Board</p>
         {getRole()}
@@ -146,7 +146,7 @@ const List = () => {
       <DragDropContext onDragEnd={(result) => {
         onDragEnd(result, lists, setLists);
       }}>
-        <div className="flex overflow-x-auto overflow-y-auto">
+        <div className="flex h-full pb-12 overflow-x-auto overflow-y-auto">
           {lists.map((list) => {
             return (
               <div key={list.id} className="min-w-fit min-h-[150px] rounded-xl overflow-x-hidden shadow-lg m-6 border">

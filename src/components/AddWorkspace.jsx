@@ -24,6 +24,7 @@ const AddWorkSpace = ({ closeModal }) => {
         description: addForm.workspaceDescription.value,
         memberId: [],
         adminId: [userID],
+        invitedId: [],
         visibility: addForm.visibility.value
       })
 

@@ -26,6 +26,7 @@ const Board = () => {
   const [member, setMember] = useState([])
   const [admin, setAdmin] = useState([])
   const [wsName, setWsName] = useState("")
+  const [invited, setInvited] = useState([])
 
   const addMember = (newMember) => {
     setMember((oldArray) => [...oldArray, newMember]);
@@ -34,6 +35,10 @@ const Board = () => {
   const addAdmin = (newAdmin) => {
     setAdmin((oldArray) => [...oldArray, newAdmin]);
   }
+
+  const addInvited = ((newInvited) => {
+    setInvited((oldArray) => [...oldArray, newInvited])
+  })
 
   useEffect(() => {
 
@@ -76,12 +81,31 @@ const Board = () => {
       }
     })
 
+    const q5 = query(workspaceRef, where(documentId(), "==", p.id))
+    const onSubscribe4 = onSnapshot(q5, (snapshot) => {
+      if (snapshot.docs[0]) {
+        setWsName(snapshot.docs[0].data().name)
+        snapshot.docs[0].data().invitedId.map((invitedId) => {
+          const q6 = query(userRef, where("userId", "==", invitedId));
+          setInvited([])
+          onSnapshot(q6, (snapshot2) => {
+            if (snapshot2.docs[0]) {
+              const currentUser = snapshot2.docs[0].data();
+              addInvited(currentUser);
+            }
+          })
+        })
+      }
+    })
+
     return () => {
       setMember([])
       setAdmin([])
+      setInvited([])
       onSubsribe()
       onSubscribe2()
       onSubscribe3()
+      onSubscribe4()
     }
   }, [location])
 
@@ -210,7 +234,7 @@ const Board = () => {
       </div> : null}
 
       {showSettings && <UpdateWorkspaceForm closeSettings={setShowSettings} />}
-      {showInvite && <InviteWorkspace closeSettings={setShowInvite} admin={admin} member={member} wsName={wsName} />}
+      {showInvite && <InviteWorkspace closeSettings={setShowInvite} admin={admin} member={member} wsName={wsName} invited={invited}/>}
       {showDelete && <DeleteWorkspace closeDelete={setShowDelete} />}
     </div>
   )

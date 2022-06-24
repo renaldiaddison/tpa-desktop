@@ -50,6 +50,7 @@ const Card = ({ listId }) => {
                                         }}
                                     >
                                         <CardModel card={card} />
+                                        {/* {<CardDetail />} */}
                                     </div>
                                 );
                             }}

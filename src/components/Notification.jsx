@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { getUser } from "../Script/User";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { addDoc, arrayUnion, collection, deleteDoc, doc, documentId, getDoc, onSnapshot, query, updateDoc, where } from "firebase/firestore";
+import { addDoc, arrayRemove, arrayUnion, collection, deleteDoc, doc, documentId, getDoc, onSnapshot, query, updateDoc, where } from "firebase/firestore";
 import { toastSuccess } from "../Script/Toast";
 import { db } from "../firebase-config";
 import { getWorkspaceById } from "../Script/Workspace";
@@ -61,6 +61,7 @@ const NotificationType = ({ notification, currUser, user }) => {
     }
 
     const handleClickDecline = () => {
+        updateWorkspace2()
         deleteNotification()
     }
 
@@ -152,7 +153,16 @@ const NotificationType = ({ notification, currUser, user }) => {
     const updateWorkspace = async () => {
         const workspaceDoc = doc(db, "workspace", notification.wsId)
         await updateDoc(workspaceDoc, {
-            memberId: arrayUnion(notification.receiveId)
+            memberId: arrayUnion(notification.receiveId),
+            invitedId: arrayRemove(notification.receiveId)
+        })
+
+    }
+
+    const updateWorkspace2 = async () => {
+        const workspaceDoc = doc(db, "workspace", notification.wsId)
+        await updateDoc(workspaceDoc, {
+            invitedId: arrayRemove(notification.receiveId)
         })
 
     }
