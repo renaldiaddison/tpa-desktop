@@ -5,7 +5,6 @@ import { useState } from 'react'
 import { useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { db } from '../firebase-config'
-import AdminWorkspace from './AdminWorkspace'
 
 const PublicWorkspace = () => {
 
@@ -19,8 +18,8 @@ const PublicWorkspace = () => {
     useEffect(() => {
         const workspaceRef = collection(db, 'workspace')
 
-        const q = query(workspaceRef, where("visibility", "==", "Public"))
-        const onSubscribe = onSnapshot(workspaceRef, (snapshot) => {
+        const q3 = query(workspaceRef, where("visibility", "==", "Public"))
+        const onSubscribe = onSnapshot(q3, (snapshot) => {
             setWorkspaces(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
         })
 
@@ -45,14 +44,36 @@ const PublicWorkspace = () => {
 
     return (
         <div className="h-[90vh] w-screen overflow-y-auto">
-            <div className="flex pt-4 pl-6">
-                <p className="font-bold text-xl pr-2">Public Workspaces</p>
+
+            {workspaces.length === 0 ? null : <><div className="flex pt-4 pl-6">
+                <p className="font-bold text-xl pr-2">{"Public Workspaces (" + workspaces.length + ")"}</p>
             </div>
-            <div className="flex flex-wrap">
-                {workspaces.map((workspace) => {
-                    return (
-                        <Link to={"/home/workspace/" + workspace.id} key={workspace.id}>{
-                            workspace.visibility === "Public" ?
+                <div className="flex flex-wrap">
+                    {workspaces.map((workspace) => {
+                        return (
+                            <Link to={"/home/workspace/" + workspace.id} key={workspace.id}>{
+                                workspace.visibility === "Public" ?
+                                    <div className="w-[270px] h-[150px] rounded-xl overflow-hidden shadow-lg m-6 border">
+                                        <div className="px-6 py-4">
+                                            <div className="font-bold text-xl mb-2">{workspace.name}</div>
+                                            <p className="text-gray-700 text-base">
+                                                {workspace.description}
+                                            </p>
+                                        </div>
+                                    </div> : null}
+                            </Link>
+                        )
+                    })}
+                </div></>}
+
+
+            {workspaceList.length === 0 ? null : <><div className="flex pt-4 pl-6">
+                <p className="font-bold text-xl pr-2">{"Admin Workspaces (" + workspaceList.length + ")"}</p>
+            </div>
+                <div className="flex flex-wrap">
+                    {workspaceList.map((workspace) => {
+                        return (
+                            <Link to={"/home/workspace/" + workspace.id} key={workspace.id}>
                                 <div className="w-[270px] h-[150px] rounded-xl overflow-hidden shadow-lg m-6 border">
                                     <div className="px-6 py-4">
                                         <div className="font-bold text-xl mb-2">{workspace.name}</div>
@@ -60,19 +81,20 @@ const PublicWorkspace = () => {
                                             {workspace.description}
                                         </p>
                                     </div>
-                                </div> : null}
-                        </Link>
-                    )
-                })}
-            </div>
+                                </div>
+                            </Link>
+                        )
+                    })}
+                </div></>}
 
-            <div className="flex pt-4 pl-6">
-                <p className="font-bold text-xl pr-2">Admin Workspaces</p>
+
+            {workspaceListMember.length === 0 ? null : <><div className="flex pt-4 pl-6">
+                <p className="font-bold text-xl pr-2">{"Member Workspaces ("  + workspaceListMember.length + ")"}</p>
             </div>
-            <div className="flex flex-wrap">
-                {workspaceList.map((workspace) => {
-                    return (
-                        <Link to={"/home/workspace/" + workspace.id} key={workspace.id}>
+                <div className="flex flex-wrap">
+                    {workspaceListMember.map((workspace) => {
+                        return (
+                            <Link to={"/home/workspace/" + workspace.id} key={workspace.id}>
                                 <div className="w-[270px] h-[150px] rounded-xl overflow-hidden shadow-lg m-6 border">
                                     <div className="px-6 py-4">
                                         <div className="font-bold text-xl mb-2">{workspace.name}</div>
@@ -82,31 +104,11 @@ const PublicWorkspace = () => {
                                     </div>
 
                                 </div>
-                        </Link>
-                    )
-                })}
-            </div>
+                            </Link>
+                        )
+                    })}
+                </div></>}
 
-            <div className="flex pt-4 pl-6">
-                <p className="font-bold text-xl pr-2">Member Workspaces</p>
-            </div>
-            <div className="flex flex-wrap">
-                {workspaceListMember.map((workspace) => {
-                    return (
-                        <Link to={"/home/workspace/" + workspace.id} key={workspace.id}>
-                                <div className="w-[270px] h-[150px] rounded-xl overflow-hidden shadow-lg m-6 border">
-                                    <div className="px-6 py-4">
-                                        <div className="font-bold text-xl mb-2">{workspace.name}</div>
-                                        <p className="text-gray-700 text-base">
-                                            {workspace.description}
-                                        </p>
-                                    </div>
-
-                                </div>
-                        </Link>
-                    )
-                })}
-            </div>
         </div>
 
     )

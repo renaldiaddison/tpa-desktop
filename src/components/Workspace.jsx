@@ -52,7 +52,7 @@ const Workspace = () => {
         return (
           <Link to={"/home/workspace/" + workspace.id} key={workspace.id}>
             <div className="p-2.5 mt-4 flex items-center rounded-none cursor-pointer hover:underline">
-              <svg class="h-7 w-7 ml-3 scale-90 cursor-pointer text-black-500 opacity-50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />  <circle cx="12" cy="7" r="4" /></svg>
+              <svg className="h-7 w-7 ml-3 scale-90 cursor-pointer text-black-500 opacity-50" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />  <circle cx="12" cy="7" r="4" /></svg>
               <span className="text-[15px] ml-4 truncate">{workspace.data().name}</span>
             </div>
           </Link>

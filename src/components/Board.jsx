@@ -6,6 +6,8 @@ import { db } from '../firebase-config';
 import AddBoard from './AddBoard'
 import DeleteWorkspace from './DeleteWorkspace';
 import InviteWorkspace from './InviteWorkspace';
+import LeaveWorkspace from './LeaveWorkspace';
+import ShowWorkspaceDetail from './ShowWorkspaceDetail';
 import UpdateWorkspaceForm from './UpdateWorkspaceForm';
 
 const Board = () => {
@@ -19,6 +21,7 @@ const Board = () => {
   const [showSettings, setShowSettings] = useState(false)
   const [showInvite, setShowInvite] = useState(false)
   const [showDelete, setShowDelete] = useState(false)
+  const [showSettingsMember, setShowSettingsMember] = useState(false)
   const [showLeave, setShowLeave] = useState(false)
 
   let role = ""
@@ -139,9 +142,12 @@ const Board = () => {
             <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
           </svg>
         </div> : null}
-        {role === "Member" ? <svg onClick={() => setShowLeave(true)} xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mt-[5px]" viewBox="0 0 20 20" fill="currentColor">
-          <path fillRule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clipRule="evenodd" />
-        </svg> : null}
+        {role === "Member" ? <div className="flex">
+          <svg onClick={() => setShowSettingsMember(true)} className="h-5 w-5 text-black mt-2 mr-2 cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">  <circle cx="12" cy="12" r="3" />  <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" /></svg>
+          <svg onClick={() => setShowLeave(true)} xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mt-[7px]" viewBox="0 0 20 20" fill="currentColor">
+            <path fillRule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clipRule="evenodd" />
+          </svg>
+        </div> : null}
       </div>
       <div className="flex flex-wrap">
         {boardList.map((board) => {
@@ -234,8 +240,10 @@ const Board = () => {
       </div> : null}
 
       {showSettings && <UpdateWorkspaceForm closeSettings={setShowSettings} />}
-      {showInvite && <InviteWorkspace closeSettings={setShowInvite} admin={admin} member={member} wsName={wsName} invited={invited}/>}
+      {showInvite && <InviteWorkspace closeSettings={setShowInvite} admin={admin} member={member} wsName={wsName} invited={invited} />}
       {showDelete && <DeleteWorkspace closeDelete={setShowDelete} />}
+      {showSettingsMember && <ShowWorkspaceDetail closeSettings={setShowSettingsMember}/>}
+      {showLeave && <LeaveWorkspace closeLeave={setShowLeave} />}
     </div>
   )
 }
