@@ -21,7 +21,6 @@ const Board = () => {
   const userRef = collection(db, "user")
   const [boardList, setBoardList] = useState([])
   const location = useLocation();
-  const { users, userData } = useUserAuth()
 
   const [ws, setWs] = useState([])
 
