@@ -6,3 +6,9 @@ export async function getWorkspaceById(id) {
     const temp = await getDoc(ref);
     return temp.data();
 }
+
+export async function getWorkspaceById2(id) {
+    const ref = doc(db, "workspace/" + id);
+    const temp = await getDoc(ref);
+    return temp;
+}

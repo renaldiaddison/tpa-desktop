@@ -1,18 +1,55 @@
-import { collection, collectionGroup, deleteDoc, doc, documentId, query, where } from 'firebase/firestore'
+import { addDoc, collection, collectionGroup, deleteDoc, doc, documentId, query, updateDoc, where } from 'firebase/firestore'
 import React from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { db } from '../firebase-config'
+import { useUserAuth } from '../Script/AuthContext'
+import { getWorkspaceById, getWorkspaceById2 } from '../Script/Workspace'
 
 const DeleteWorkspace = ({ closeDelete }) => {
 
     const p = useParams()
     const navigate = useNavigate()
 
+    const { user, userData } = useUserAuth()
+
+    const sendNotif = (id, ws) => {
+        const notifRef = collection(db, "notification")
+        return addDoc(notifRef, {
+            title: "",
+            content: ws.name + " want to be deleted!",
+            senderId: "CHello.com",
+            receiveId: id,
+            type: "confirmation",
+            wsId: p.id
+        })
+    }
+
     const deleteWorkspace = () => {
-        
-        const workspaceDoc = doc(db, "workspace", p.id)
-        deleteDoc(workspaceDoc)
-    
+
+        getWorkspaceById2(p.id).then((ws) => {
+            const workspace = ws.data()
+            // console.log(user.uid)
+            if (workspace.adminId.length === 1) {
+                const workspaceDoc = doc(db, "workspace", p.id)
+                deleteDoc(workspaceDoc)
+            }
+            else if (workspace.adminId.length > 1) {
+                const workspaceDoc = doc(db, "workspace", p.id)
+                updateDoc(workspaceDoc, {
+                    deleteConf: [user.uid]
+                })
+
+                for(let i = 0; i < workspace.adminId.length; i++) {
+                    if(workspace.adminId[i] === user.uid) {
+                        continue
+                    }
+                    sendNotif(workspace.adminId[i], ws.data())
+                }
+            }
+        })
+
+
+
     }
 
     const handleClick = () => {
@@ -33,7 +70,7 @@ const DeleteWorkspace = ({ closeDelete }) => {
                         <p className="mb-3">Are you sure to delete this workspace?</p>
                         <div className="updateWorkspace space-y-3">
                             <div>
-                                <button onClick={() => handleClick()}className="text-white bg-red-700 hover:bg-red-800 mr-3 focus:outline-none font-medium rounded-lg text-sm py-[6px] px-4 text-center border border-red-700">Yes</button>
+                                <button onClick={() => handleClick()} className="text-white bg-red-700 hover:bg-red-800 mr-3 focus:outline-none font-medium rounded-lg text-sm py-[6px] px-4 text-center border border-red-700">Yes</button>
                                 <button onClick={() => closeDelete(false)} className="text-black bg-white focus:outline-none font-medium rounded-lg text-sm py-[6px] px-4 text-center border border-gray-400">No</button>
                             </div>
                         </div>

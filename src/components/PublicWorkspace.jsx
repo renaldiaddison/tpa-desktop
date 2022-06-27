@@ -5,12 +5,14 @@ import { useState } from 'react'
 import { useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { db } from '../firebase-config'
+import JoinWorkspaceLink from './JoinWorkspaceLink'
 
 const PublicWorkspace = () => {
 
     const [workspaces, setWorkspaces] = useState([])
     const [workspaceList, setWorkspaceList] = useState([])
     const [workspaceListMember, setWorkspaceListMember] = useState([])
+    const [showJoin, setShowJoin] = useState(false)
     const auth = getAuth()
 
     const location = useLocation()
@@ -89,7 +91,7 @@ const PublicWorkspace = () => {
 
 
             {workspaceListMember.length === 0 ? null : <><div className="flex pt-4 pl-6">
-                <p className="font-bold text-xl pr-2">{"Member Workspaces ("  + workspaceListMember.length + ")"}</p>
+                <p className="font-bold text-xl pr-2">{"Member Workspaces (" + workspaceListMember.length + ")"}</p>
             </div>
                 <div className="flex flex-wrap">
                     {workspaceListMember.map((workspace) => {
@@ -109,6 +111,11 @@ const PublicWorkspace = () => {
                     })}
                 </div></>}
 
+            <svg xmlns="http://www.w3.org/2000/svg" onClick={() => setShowJoin(true)} className="h-9 w-9 absolute right-8 bottom-5 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+            </svg>
+
+            {showJoin && <JoinWorkspaceLink closeModal={setShowJoin}/>}
         </div>
 
     )

@@ -1,29 +1,61 @@
 import { arrayRemove, collection, collectionGroup, deleteDoc, doc, documentId, query, updateDoc, where } from 'firebase/firestore'
-import React from 'react'
+import React, { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { db } from '../firebase-config'
 import { useUserAuth } from '../Script/AuthContext'
-import { toastSuccess } from '../Script/Toast'
+import { toastError, toastSuccess } from '../Script/Toast'
+import { getWorkspaceById } from '../Script/Workspace'
+import DeleteWorkspace from './DeleteWorkspace'
 
-const LeaveWorkspace = ({ closeLeave }) => {
+const LeaveWorkspaceAdmin = ({ closeLeave }) => {
+
     const p = useParams()
     const navigate = useNavigate()
+    // const [ws, setWs] = useState([])
+    const [showDelete, setShowDelete] = useState(false)
 
     const { user, userData } = useUserAuth()
 
-    const leaveWorkspace = async () => {
-
+    const deleteWorkspace = () => {
+        
         const workspaceDoc = doc(db, "workspace", p.id)
-        await updateDoc(workspaceDoc, {
-            memberId: arrayRemove(user.uid)
+        deleteDoc(workspaceDoc)
+    
+    }
+
+    const leaveWorkspace = () => {
+
+        getWorkspaceById(p.id).then((ws, id) => {
+            console.log(ws)
+            if (ws.adminId.length !== 1) {
+                const workspaceDoc = doc(db, "workspace", p.id)
+                updateDoc(workspaceDoc, {
+                    adminId: arrayRemove(user.uid)
+                })
+                toastSuccess("Successfully left workspace")
+                navigate("/home")
+            }
+            else if (ws.adminId.length === 1 && ws.memberId.length > 0) {
+                navigate("/home/workspace/" + p.id)
+                closeLeave(false)
+                toastError("You must grant a member to leave workspace")
+            }
+            else if (ws.adminId.length === 1 && ws.memberId.length === 0) {
+                deleteWorkspace()
+                toastSuccess("Successfully left workspace")
+                navigate("/home")
+            }
+
         })
+
+
+
 
     }
 
     const handleClick = () => {
         leaveWorkspace()
-        navigate("/home")
-        toastSuccess("Successfully left workspace")
+        
     }
 
 
@@ -46,8 +78,9 @@ const LeaveWorkspace = ({ closeLeave }) => {
                     </div>
                 </div>
             </div>
+            {showDelete && <DeleteWorkspace closeDelete={setShowDelete} />}
         </div>
     )
 }
 
-export default LeaveWorkspace
+export default LeaveWorkspaceAdmin

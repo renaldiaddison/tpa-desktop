@@ -1,8 +1,9 @@
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { arrayUnion, collection, doc, getDocs, query, updateDoc, where } from 'firebase/firestore';
+import { arrayUnion, collection, deleteDoc, doc, documentId, getDocs, onSnapshot, query, Timestamp, updateDoc, where } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { db } from '../firebase-config';
+import { useUserAuth } from '../Script/AuthContext';
 import { toastError, toastSuccess } from '../Script/Toast';
 import { getWorkspaceById } from '../Script/Workspace';
 
@@ -13,26 +14,52 @@ const AcceptInvite = () => {
     const location = useLocation()
     const navigate = useNavigate()
     let userId = ""
+    const linkRef = collection(db, "workspaceLink")
+    const workspaceRef = collection(db, "workspace")
 
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
+
         if (!user) {
             navigate("/")
-            toastError("You need to login to join a workspace")
-        }
-        if(ws.adminId.includes(user.uid) || ws.memberId.includes(user.uid)) {
+        } else if (ws.adminId.includes(user.uid) || ws.memberId.includes(user.uid)) {
             navigate("/home")
-            toastError("You already in the workspace")
         }
+
         userId = user.uid
     })
 
-    useEffect(() => {
-        getWorkspaceById(p.id).then((ws, id) => {
-            setWs(ws)
-        });
+    const validateLinkExpired = (time) => {
+        var diff = Timestamp.now().seconds - time.seconds
+        return diff < 86400
+    }
 
-    }, [location])
+    useEffect(() => {
+        const q = query(workspaceRef, where(documentId(), "==", p.id))
+        onSnapshot(q, (snapshot) => {
+            if (snapshot.docs[0]) {
+                setWs(snapshot.docs[0].data())
+            }
+            else {
+                navigate("/home")
+            }
+        })
+
+        const q2 = query(linkRef, where("workspaceId", "==", p.id))
+
+        onSnapshot(q2, (snapshot) => {
+            if (!snapshot.docs[0]) {
+                navigate("/home")
+                toastError("Link is not valid")
+            }
+            else if (!validateLinkExpired(snapshot.docs[0].data().createdAt)) {
+                deleteDoc(doc(db, "workspaceLink", snapshot.docs[0].id))
+                navigate("/home")
+                toastError("Link is not valid")
+            }
+        })
+
+    }, [])
 
     const updateWorkspace = async () => {
         console.log(userId)
@@ -51,11 +78,10 @@ const AcceptInvite = () => {
         const updateRef = doc(db, "user", userDocsId);
         await updateDoc(updateRef, {
             workspace: arrayUnion(p.id)
-        }); 
+        });
     }
 
     const handleClick = () => {
-        // updateUser()
         updateWorkspace()
     }
 
