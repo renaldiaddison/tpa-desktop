@@ -26,7 +26,7 @@ function App() {
 
   return (
     <div className="h-screen">
-      <ToastContainer limit={1}></ToastContainer>
+      <ToastContainer></ToastContainer>
       <UserAuthContextProvider>
 
       <Routes>
