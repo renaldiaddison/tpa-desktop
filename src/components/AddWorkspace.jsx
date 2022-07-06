@@ -1,10 +1,19 @@
-import { addDoc, arrayUnion, collection, doc, getDocs, query, updateDoc, where } from 'firebase/firestore'
-import { useEffect } from 'react'
+import { addDoc, arrayUnion, collection, doc, getDocs, onSnapshot, query, updateDoc, where } from 'firebase/firestore'
+import { useEffect, useRef, useState } from 'react'
 import { db } from '../firebase-config'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
+import Select from 'react-select'
+import { useParams } from 'react-router-dom'
 
 const AddWorkSpace = ({ closeModal }) => {
+  const p = useParams()
   const workspaceRef = collection(db, 'workspace')
+  const selectRef = useRef()
+  const opt = [
+  ]
+  const [options, setOptions] = useState([])
+  const userRef = collection(db, 'user')
+
 
   const auth = getAuth();
   let userID = "";
@@ -16,9 +25,19 @@ const AddWorkSpace = ({ closeModal }) => {
   })
 
   useEffect(() => {
+
+    const auth = getAuth()
+    const q = query(userRef, where("userId", "!=", auth.currentUser.uid))
+    onSnapshot(q, (snapshot) => {
+      if (snapshot) {
+        setOptions(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+      }
+    })
+
     const addForm = document.querySelector('.addWorkspace')
     addForm.addEventListener('submit', (e) => {
       e.preventDefault()
+
       const doc = addDoc(workspaceRef, {
         name: addForm.workspaceName.value,
         description: addForm.workspaceDescription.value,
@@ -28,14 +47,50 @@ const AddWorkSpace = ({ closeModal }) => {
         visibility: addForm.visibility.value
       })
 
+      const invited = selectRef.current.getValue()
+      for(let i = 0; i < invited.length; i++) {
+        sendNotif(invited[i].value)
+      }
+
       closeModal(false)
     })
 
 
-  })
-  
+  }, [])
+
+
+  const sendNotif = (id) => {
+    const addForm = document.querySelector('.addWorkspace')
+    const notifRef = collection(db, "notification")
+    return addDoc(notifRef, {
+      title: "",
+      content: "You have been invited to join '" + addForm.workspaceName.value + "' workspace",
+      senderId: "CHello.com",
+      receiveId: id,
+      type: "offer",
+      wsId: p.id
+    })
+  }
+
+  // const updateInvitedWorkspace = async (id) => {
+  //   const listDoc = doc(db, "workspace", p.id)
+  //   await updateDoc(listDoc, {
+  //     invitedId: arrayUnion(id)
+  //   })
+  // }
+
+  const insertOptions = () => {
+    for (let i = 0; i < options.length; i++) {
+      if (options[i].email !== "CHello@gmail.com") {
+        opt.push({ value: options[i].userId, label: options[i].email })
+      }
+
+    }
+  }
+
   return (
     <div tabIndex="-1" aria-hidden="true" className="fixed overflow-y-auto overflow-x-hidden w-full md:inset-0 md:h-full bg-gray-500 bg-opacity-30 h-full flex justify-center items-center">
+      {insertOptions()}
       <div className="fixed p-4 w-full max-w-2xl h-full md:h-auto">
         <div className="bg-white rounded-lg shadow dark:bg-gray-700 border-2 relative">
           <button onClick={() => closeModal(false)} type="button" className="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white" data-modal-toggle="authentication-modal">
@@ -65,6 +120,19 @@ const AddWorkSpace = ({ closeModal }) => {
                   <option>Public</option>
                   <option>Private</option>
                 </select>
+              </div>
+              <div>
+                <label htmlFor="visibility" className="block text-sm mb-2 font-medium text-gray-900">
+                  Choose user to invite
+                </label>
+                <Select
+                  id="visibility"
+                  name="visibility"
+                  ref={selectRef}
+                  options={opt}
+                  isMulti="true"
+                >
+                </Select>
               </div>
               <button className="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-3 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Create Workspace</button>
             </form>

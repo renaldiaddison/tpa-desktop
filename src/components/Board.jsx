@@ -170,18 +170,46 @@ const Board = () => {
       </div>
       <div className="flex flex-wrap">
         {boardList.map((board) => {
-          return (
-            <Link to={"/home/board/" + board.id} key={board.id}>
-              <div className="w-[270px] h-[150px] rounded-xl overflow-hidden shadow-lg m-6 border">
-                <div className="px-6 py-4">
-                  <div className="font-bold text-xl mb-2">{board.data().name}</div>
-                  <p className="text-gray-700 text-base">
-                    {board.data().description}
-                  </p>
+          if(board.data().visibility === "Public") {
+            return (
+              <Link to={"/home/board/" + board.id} key={board.id}>
+                <div className="w-[270px] h-[150px] rounded-xl overflow-hidden shadow-lg m-6 border">
+                  <div className="px-6 py-4">
+                    <div className="font-bold text-xl mb-2">{board.data().name}</div>
+                    <p className="text-gray-700 text-base">
+                      {board.data().description}
+                    </p>
+                  </div>
                 </div>
-              </div>
-            </Link>
-          )
+              </Link>
+            )
+          }
+          else if(board.data().visibility === "Workspace" && role != "") {
+            return (
+              <Link to={"/home/board/" + board.id} key={board.id}>
+                <div className="w-[270px] h-[150px] rounded-xl overflow-hidden shadow-lg m-6 border">
+                  <div className="px-6 py-4">
+                    <div className="font-bold text-xl mb-2">{board.data().name}</div>
+                    <p className="text-gray-700 text-base">
+                      {board.data().description}
+                    </p>
+                  </div>
+                </div>
+              </Link>
+            )
+          }
+            return (
+              <Link to={"/home/board/" + board.id} key={board.id}>
+                <div className="w-[270px] h-[150px] rounded-xl overflow-hidden shadow-lg m-6 border">
+                  <div className="px-6 py-4">
+                    <div className="font-bold text-xl mb-2">{board.data().name}</div>
+                    <p className="text-gray-700 text-base">
+                      {board.data().description}
+                    </p>
+                  </div>
+                </div>
+              </Link>
+            )
         })}
         {role === "" ? null : <AddBoard />}
       </div>
