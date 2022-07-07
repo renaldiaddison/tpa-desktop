@@ -15,6 +15,7 @@ import ShowWorkspaceDetail from './ShowWorkspaceDetail';
 import UpdateWorkspaceForm from './UpdateWorkspaceForm';
 
 const Board = () => {
+
   const p = useParams();
   const boardRef = collection(db, 'board')
   const workspaceRef = collection(db, 'workspace')
@@ -167,9 +168,15 @@ const Board = () => {
             <path fillRule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clipRule="evenodd" />
           </svg>
         </div> : null}
+
+        {role === "" ? <div className="flex">
+          <svg onClick={() => setShowSettingsMember(true)} className="h-5 w-5 text-black mt-2 mr-2 cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">  <circle cx="12" cy="12" r="3" />  <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" /></svg>
+        </div> : null}
       </div>
       <div className="flex flex-wrap">
         {boardList.map((board) => {
+
+          const auth = getAuth()
           if(board.data().visibility === "Public") {
             return (
               <Link to={"/home/board/" + board.id} key={board.id}>
@@ -198,6 +205,7 @@ const Board = () => {
               </Link>
             )
           }
+          else if(board.data().memberId.includes(auth.currentUser.uid) === true || board.data().adminId.includes(auth.currentUser.uid) === true) {
             return (
               <Link to={"/home/board/" + board.id} key={board.id}>
                 <div className="w-[270px] h-[150px] rounded-xl overflow-hidden shadow-lg m-6 border">
@@ -210,6 +218,7 @@ const Board = () => {
                 </div>
               </Link>
             )
+          }
         })}
         {role === "" ? null : <AddBoard />}
       </div>

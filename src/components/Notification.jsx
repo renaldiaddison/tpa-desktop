@@ -225,6 +225,33 @@ const NotificationType = ({ notification, currUser, user }) => {
             </Menu.Item>
         </React.Fragment>)
     }
+    else if (notification.type === "offerBoard") {
+        return (<React.Fragment>
+            <Menu.Item>
+                {({ active }) => (
+                    <div
+                        className={
+                            (active ? "bg-gray-800" : "",
+                                "block px-4 py-2 text-sm text-gray-700 cursor-pointer")
+                        }
+                    >
+                        <h1 className="font-bold mb-1 italic">{currUser ? currUser.displayName : ""}</h1>
+                        <p> {notification.title}</p>
+                        <p> {notification.content}</p>
+                        <div className="mt-1">
+                            <p onClick={() => handleClickAcceptBoard()} className="w-fit inline-flex items-center px-2 mr-2 py-1 mb-3 border border-transparent text-base font-medium justify-center rounded-md shadow-sm text-white bg-blue-500 hover:bg-blue-700 focus:outline-none cursor-pointer">
+                                Accept
+                            </p>
+                            <p onClick={() => handleClickDecline()} className="w-fit inline-flex items-center px-2 py-1 mb-3 border border-transparent text-base font-medium justify-center rounded-md shadow-sm text-white bg-red-500 hover:bg-red-700 focus:outline-none cursor-pointer">
+                                Decline
+                            </p>
+                        </div>
+
+                    </div>
+                )}
+            </Menu.Item>
+        </React.Fragment>)
+    }
     else if (notification.type === "announce") {
         return (<React.Fragment>
             <Menu.Item>

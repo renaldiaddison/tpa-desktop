@@ -38,6 +38,10 @@ const AddWorkSpace = ({ closeModal }) => {
     addForm.addEventListener('submit', (e) => {
       e.preventDefault()
 
+      let wsId = ""
+
+      const invited = selectRef.current.getValue()
+     
       const doc = addDoc(workspaceRef, {
         name: addForm.workspaceName.value,
         description: addForm.workspaceDescription.value,
@@ -45,12 +49,22 @@ const AddWorkSpace = ({ closeModal }) => {
         adminId: [userID],
         invitedId: [],
         visibility: addForm.visibility.value
+      }).then((doc) => {
+        // const invited = selectRef.current.getValue()
+        // console.log(invited)
+        // for (let i = 0; i < invited.length; i++) {
+        //   sendNotif(invited[i].value, doc.id)
+        // }
+        // console.log(doc)
+        for (let i = 0; i < invited.length; i++) {
+          sendNotif(invited[i].value, doc.id, addForm.workspaceName.value)
+        }
       })
 
-      const invited = selectRef.current.getValue()
-      for(let i = 0; i < invited.length; i++) {
-        sendNotif(invited[i].value)
-      }
+   
+      
+      
+     
 
       closeModal(false)
     })
@@ -59,16 +73,16 @@ const AddWorkSpace = ({ closeModal }) => {
   }, [])
 
 
-  const sendNotif = (id) => {
-    const addForm = document.querySelector('.addWorkspace')
+  const sendNotif = (id, wsId, wsName) => {
+    // const addForm = document.querySelector('.addWorkspace')
     const notifRef = collection(db, "notification")
     return addDoc(notifRef, {
       title: "",
-      content: "You have been invited to join '" + addForm.workspaceName.value + "' workspace",
+      content: "You have been invited to join '" + wsName + "' workspace",
       senderId: "CHello.com",
       receiveId: id,
       type: "offer",
-      wsId: p.id
+      wsId: wsId
     })
   }
 
@@ -108,7 +122,7 @@ const AddWorkSpace = ({ closeModal }) => {
                 <textarea autoComplete="off" spellCheck="false" type="text" placeholder="Workspace Description" className="border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:border-gray-500 dark:text-white min-h-[200px] max-h-[200px] focus:outline-none" name="workspaceDescription" required></textarea>
               </div>
               <div>
-                <label htmlFor="visibility" className="block mb-2 text-sm font-medium text-gray-900">
+                <label className="block mb-2 text-sm font-medium text-gray-900">
                   Visibility
                 </label>
                 <select
@@ -126,8 +140,8 @@ const AddWorkSpace = ({ closeModal }) => {
                   Choose user to invite
                 </label>
                 <Select
-                  id="visibility"
-                  name="visibility"
+                  id=""
+                  name=""
                   ref={selectRef}
                   options={opt}
                   isMulti="true"
