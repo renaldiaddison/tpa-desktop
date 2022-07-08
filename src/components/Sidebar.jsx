@@ -23,21 +23,25 @@ const Sidebar = () => {
           <div className="flex items-center rounded-md">
           </div>
           <div>
-            <div className="border-2 px-2.5 py-2 mb-4 flex items-center rounded-md cursor-pointer bg-white">
-              <svg className="h-5 w-5 text-slate-400" width="24" height="24" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">  <path stroke="none" d="M0 0h24v24H0z" />  <circle cx="10" cy="10" r="7" />  <line x1="21" y1="21" x2="15" y2="15" /></svg>
-              <input className="text-[15px] ml-2 w-full bg-transparent focus:outline-none" placeholder="Search" />
-            </div>
+            
             <Link to="/home">
               <div className=" p-2.5 mt-4 flex items-center rounded-md cursor-pointer hover:bg-gray-400 hover:text-white">
-                <span className="text-[15px] ml-4">Workspace</span>
+                <span className="text-[15px] ml-4">Home</span>
+              </div>
+            </Link>
+            <Link to="/public">
+              <div className=" p-2.5 mt-4 flex items-center rounded-md cursor-pointer hover:bg-gray-400 hover:text-white">
+                <span className="text-[15px] ml-4">Public Workspaces & Boards</span>
               </div>
             </Link>
             {/* <div className="p-2.5 mt-4 flex items-center rounded-md cursor-pointer hover:bg-gray-400 hover:text-white">
               <span className="text-[15px] ml-4">Boards</span>
             </div> */}
-            <div className="p-2.5 mt-4 mb-6 flex items-center rounded-md cursor-pointer hover:bg-gray-400 hover:text-white">
-              <span className="text-[15px] ml-4">Boards</span>
-            </div>
+            <Link to="/closedBoards">
+              <div className="p-2.5 mt-4 mb-6 flex items-center rounded-md cursor-pointer hover:bg-gray-400 hover:text-white">
+                <span className="text-[15px] ml-4">Closed Boards</span>
+              </div>
+            </Link>
             <div className="border-t border-slate-500"></div>
             <div onClick={() => setShowModal(true)} className="p-2.5 mt-6 flex items-center rounded-none cursor-pointer" >
               <span className="text-[15px] ml-4 mr-2">Add workspace</span>

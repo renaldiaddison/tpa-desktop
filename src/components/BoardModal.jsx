@@ -27,7 +27,8 @@ const BoardModal = ({ closeModal }) => {
         adminId: [userID],
         memberId: [],
         workspaceId: p.id,
-        visibility: addForm.visibility.value
+        visibility: addForm.visibility.value,
+        closed: false
       })
       closeModal(false)
     })

@@ -1,11 +1,11 @@
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
+import Home from '../components/Home'
 import Navbar from '../components/Navbar'
 import Sidebar from '../components/Sidebar'
-import Board from '../components/Board'
 
-const WorkspacePage = () => {
+const HomePage = () => {
 
   const navigate = useNavigate()
 
@@ -18,14 +18,14 @@ const WorkspacePage = () => {
 
   return (
     <div>
-      <Navbar />
+      <Navbar/>
       <div className="flex w-screen h-[90vh]">
-          <Sidebar />
-          <Board />
+        <Sidebar />
+        <Home />
       </div>
     </div>
 
   )
 }
 
-export default WorkspacePage
+export default HomePage

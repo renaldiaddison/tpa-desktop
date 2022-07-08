@@ -1,6 +1,6 @@
 import { app } from './firebase-config';
 import Login from './components/Login';
-import Home from './pages/Home';
+import HomePage from './pages/HomePage';
 import Register from './components/Register';
 import WorkspacePage from './pages/WorkspacePage';
 import { Routes, Route } from 'react-router-dom';
@@ -8,6 +8,9 @@ import BoardPage from './pages/BoardPage';
 import { ToastContainer } from 'react-toastify';
 import AcceptInvite from './pages/AcceptInvite';
 import { UserAuthContextProvider } from './Script/AuthContext';
+import AcceptInviteBoard from './pages/AcceptInviteBoard';
+import ListWorkspace from './pages/Public';
+import ListBoard from './pages/ClosedBoard';
 
 
 function App() {
@@ -34,7 +37,10 @@ function App() {
         <Route exact path='/home/workspace/:id' element={<WorkspacePage />}></Route>
         <Route exact path='/home/board/:id' element={<BoardPage />}></Route>
         <Route exact path='/invite-link/:id' element={<AcceptInvite/>}></Route>
-        <Route exact path='/home' element={<Home />} />
+        <Route exact path='/invite-link-board/:id' element={<AcceptInviteBoard/>}></Route>
+        <Route exact path='/home' element={<HomePage />} />
+        <Route exact path='/public' element={<ListWorkspace />} />
+        <Route exact path='/closedBoards' element={<ListBoard />} />
       </Routes>
       </UserAuthContextProvider>
     </div>

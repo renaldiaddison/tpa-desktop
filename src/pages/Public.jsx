@@ -3,10 +3,9 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import Sidebar from '../components/Sidebar'
-import PublicWorkspace from '../components/PublicWorkspace'
+import PublicWorkspace from '../components/Public'
 
-const Home = () => {
-
+const ListWorkspace = () => {
   const navigate = useNavigate()
 
   const auth = getAuth();
@@ -28,4 +27,4 @@ const Home = () => {
   )
 }
 
-export default Home
+export default ListWorkspace

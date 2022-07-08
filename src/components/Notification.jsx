@@ -6,6 +6,7 @@ import { addDoc, arrayRemove, arrayUnion, collection, deleteDoc, doc, documentId
 import { toastSuccess } from "../Script/Toast";
 import { db } from "../firebase-config";
 import { getWorkspaceById, getWorkspaceById2 } from "../Script/Workspace";
+import { getBoardById2 } from "../Script/Board";
 
 function classNames(...classes) {
     return classes.filter(Boolean).join("");
@@ -67,6 +68,25 @@ const NotificationType = ({ notification, currUser, user }) => {
         })
     }
 
+    const updateBoardDelete = async () => {
+        const boardDoc = doc(db, "board", notification.wsId)
+        await updateDoc(boardDoc, {
+            deleteConf: arrayUnion(notification.receiveId),
+        })
+
+        getBoardById2(notification.wsId).then((b) => {
+            const board = b.data()
+            if (board.adminId.length === board.deleteConf.length) {
+                deleteBoard()
+            }
+        })
+    }
+
+    const deleteBoard = async () => {
+        const boardDoc = doc(db, "board", notification.wsId)
+        await deleteDoc(boardDoc)
+    }
+
 
     const handleClickAccept = () => {
         updateWorkspace()
@@ -95,6 +115,27 @@ const NotificationType = ({ notification, currUser, user }) => {
         deleteNotification()
     }
 
+    const handleClickAcceptBoard = () => {
+        updateBoard()
+        sendAllNotification()
+        deleteNotification()
+        navigate("/home/board/" + notification.wsId)
+        toastSuccess("Successfully join board")
+    }
+
+    const handleClickDeclineBoard = () => {
+        deleteNotification()
+    }
+
+    const handleClickAcceptDeleteBoard = () => {
+        updateBoardDelete()
+        deleteNotification()
+    }
+
+    const handleClickDeclineDeleteBoard = () => {
+        deleteNotification()
+    }
+
     const deleteNotification = async () => {
         const notifDoc = doc(db, "notification", notification.id)
         await deleteDoc(notifDoc)
@@ -112,6 +153,7 @@ const NotificationType = ({ notification, currUser, user }) => {
     useEffect(() => {
 
         const workspaceRef = collection(db, 'workspace')
+        const boardRef = collection(db, 'board')
         const userRef = collection(db, "user")
 
 
@@ -149,11 +191,48 @@ const NotificationType = ({ notification, currUser, user }) => {
             }
         })
 
+        const q6 = query(boardRef, where(documentId(), "==", notification.wsId))
+        const onSubscribe4 = onSnapshot(q6, (snapshot) => {
+            if (snapshot.docs[0]) {
+                setWsName(snapshot.docs[0].data().name)
+                snapshot.docs[0].data().adminId.map((adminId) => {
+                    const q7 = query(userRef, where("userId", "==", adminId));
+                    setAdmin([])
+                    onSnapshot(q7, (snapshot2) => {
+                        if (snapshot2.docs[0]) {
+                            const currentUser = snapshot2.docs[0].data();
+                            addAdmin(currentUser);
+                        }
+                    })
+                })
+            }
+        })
+
+        const q8 = query(workspaceRef, where(documentId(), "==", notification.wsId))
+        const onSubscribe5 = onSnapshot(q8, (snapshot) => {
+            if (snapshot.docs[0]) {
+                setWsName(snapshot.docs[0].data().name)
+                snapshot.docs[0].data().memberId.map((memberId) => {
+                    const q9 = query(userRef, where("userId", "==", memberId));
+                    setMember([])
+                    onSnapshot(q9, (snapshot2) => {
+                        if (snapshot2.docs[0]) {
+                            const currentUser = snapshot2.docs[0].data();
+                            addMember(currentUser);
+                        }
+                    })
+                })
+            }
+        })
+
+
         return () => {
             setMember([])
             setAdmin([])
             onSubscribe2()
             onSubscribe3()
+            onSubscribe4()
+            onSubscribe5()
         }
     }, [location])
 
@@ -172,7 +251,7 @@ const NotificationType = ({ notification, currUser, user }) => {
         const notifRef = collection(db, "notification")
         return addDoc(notifRef, {
             title: "Announcement!",
-            content: user.displayName + " has joined '" + wsName + "' workspace",
+            content: user.displayName + " has joined '" + wsName + "'",
             senderId: "CHello.com",
             receiveId: id,
             type: "announce",
@@ -195,6 +274,13 @@ const NotificationType = ({ notification, currUser, user }) => {
             invitedId: arrayRemove(notification.receiveId)
         })
 
+    }
+
+    const updateBoard = async () => {
+        const boardDoc = doc(db, "board", notification.wsId)
+        await updateDoc(boardDoc, {
+            memberId: arrayUnion(notification.receiveId)
+        })
     }
 
 
@@ -242,7 +328,7 @@ const NotificationType = ({ notification, currUser, user }) => {
                             <p onClick={() => handleClickAcceptBoard()} className="w-fit inline-flex items-center px-2 mr-2 py-1 mb-3 border border-transparent text-base font-medium justify-center rounded-md shadow-sm text-white bg-blue-500 hover:bg-blue-700 focus:outline-none cursor-pointer">
                                 Accept
                             </p>
-                            <p onClick={() => handleClickDecline()} className="w-fit inline-flex items-center px-2 py-1 mb-3 border border-transparent text-base font-medium justify-center rounded-md shadow-sm text-white bg-red-500 hover:bg-red-700 focus:outline-none cursor-pointer">
+                            <p onClick={() => handleClickDeclineBoard()} className="w-fit inline-flex items-center px-2 py-1 mb-3 border border-transparent text-base font-medium justify-center rounded-md shadow-sm text-white bg-red-500 hover:bg-red-700 focus:outline-none cursor-pointer">
                                 Decline
                             </p>
                         </div>
@@ -291,6 +377,33 @@ const NotificationType = ({ notification, currUser, user }) => {
                                 Accept
                             </p>
                             <p onClick={() => handleClickDeclineDelete()} className="w-fit inline-flex items-center px-2 py-1 mb-3 border border-transparent text-base font-medium justify-center rounded-md shadow-sm text-white bg-red-500 hover:bg-red-700 focus:outline-none cursor-pointer">
+                                Decline
+                            </p>
+                        </div>
+
+                    </div>
+                )}
+            </Menu.Item>
+        </React.Fragment>)
+    }
+    else if (notification.type === "confirmationBoard") {
+        return (<React.Fragment>
+            <Menu.Item>
+                {({ active }) => (
+                    <div
+                        className={
+                            (active ? "bg-gray-800" : "",
+                                "block px-4 py-2 text-sm text-gray-700 cursor-pointer")
+                        }
+                    >
+                        <h1 className="font-bold mb-1 italic">{currUser ? currUser.displayName : ""}</h1>
+                        <p> {notification.title}</p>
+                        <p> {notification.content}</p>
+                        <div className="mt-1">
+                            <p onClick={() => handleClickAcceptDeleteBoard()} className="w-fit inline-flex items-center px-2 mr-2 py-1 mb-3 border border-transparent text-base font-medium justify-center rounded-md shadow-sm text-white bg-blue-500 hover:bg-blue-700 focus:outline-none cursor-pointer">
+                                Accept
+                            </p>
+                            <p onClick={() => handleClickDeclineDeleteBoard()} className="w-fit inline-flex items-center px-2 py-1 mb-3 border border-transparent text-base font-medium justify-center rounded-md shadow-sm text-white bg-red-500 hover:bg-red-700 focus:outline-none cursor-pointer">
                                 Decline
                             </p>
                         </div>

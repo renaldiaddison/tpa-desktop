@@ -1,34 +1,34 @@
-import { doc, updateDoc } from 'firebase/firestore'
 import React, { useEffect, useRef, useState } from 'react'
 import { useLocation, useParams } from 'react-router-dom'
-import Select from 'react-select'
-import { db } from '../firebase-config'
-import { getWorkspaceById } from '../Script/Workspace'
+import { getBoardById } from '../Script/Board'
 
-const ShowWorkspaceDetail = ({ closeSettings }) => {
-
-    const options = [
-        { value: 'Public', label: 'Public', },
-        { value: 'Private', label: 'Private' }
-    ];
-
+const ShowBoardDetail = ({closeSettings}) => {
     const refName = useRef()
     const refDesc = useRef()
+    const refVisibility = useRef()
     const location = useLocation()
     const p = useParams()
 
-    const [ws, setWs] = useState([])
+    const [b, setB] = useState([])
     const [vis, setVis] = useState([])
 
+    const options = [
+        { label: 'Public', value: 'Public' },
+        { label: 'Workspace', value: 'Workspace' },
+        {  label: 'Private', value: 'Private' }
+    ];
 
     useEffect(() => {
-        getWorkspaceById(p.id).then((ws, id) => {
-            setWs(ws)
-            if (ws.visibility === 'Public') {
+        getBoardById(p.id).then((b, id) => {
+            setB(b)
+            if (b.visibility === 'Public') {
                 setVis(options[0])
             }
-            else {
+            else if(b.visibility === "Workspace") {
                 setVis(options[1])
+            }
+            else {
+                setVis(options[2])
             }
         });
         return () => { }
@@ -43,15 +43,15 @@ const ShowWorkspaceDetail = ({ closeSettings }) => {
                         <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd"></path></svg>
                     </button>
                     <div className="py-6 px-6 lg:px-8">
-                        <h3 className="mb-4 text-xl font-medium text-gray-900 dark:text-white">Workspace Detail</h3>
-                        <div className="updateWorkspace space-y-6">
+                        <h3 className="mb-4 text-xl font-medium text-gray-900 dark:text-white">Update Board</h3>
+                        <div className="updateBoard space-y-6">
                             <div>
-                                <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Workspace Name</label>
-                                <p className="caret-transparent border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-600 dark:text-white focus:outline-none" name="workspaceName">{ws.name}</p>
+                                <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Board Name</label>
+                                <p autoComplete="off" spellCheck="false" type="text" className="border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-600 dark:text-white focus:outline-none" placeholder="Board Name" name="boardName" ref={refName}>{b.name}</p>
                             </div>
                             <div>
-                                <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Workspace Description</label>
-                                <textarea autoComplete="off" spellCheck="false" type="text" className="resize-none caret-transparent border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:border-gray-500 dark:text-white min-h-[200px] max-h-[200px] focus:outline-none cursor-default" name="workspaceDescription" ref={refDesc} value={ws.description} required></textarea>
+                                <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Board Description</label>
+                                <textarea autoComplete="off" spellCheck="false" type="text" placeholder="Board Description" className="caret-transparent border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 cursor-default dark:border-gray-500 dark:text-white min-h-[200px] max-h-[200px] focus:outline-none" name="boardDescription" ref={refDesc} value={b.description} required></textarea>
                             </div>
                             <div>
                                 <label htmlFor="visibility" className="block mb-2 text-sm font-medium text-gray-900">
@@ -67,4 +67,4 @@ const ShowWorkspaceDetail = ({ closeSettings }) => {
     )
 }
 
-export default ShowWorkspaceDetail
+export default ShowBoardDetail
