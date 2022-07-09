@@ -108,17 +108,6 @@ const CardDetail = ({ cardId, role, closeSettings }) => {
         }
     }, [quill]);
 
-    // useEffect(() => {
-    //     if (card.labels) {
-    //         setCardLabel([])
-    //         for (let i = 0; i < card.labels.length; i++) {
-    //             getLabel(card.labels[i]).then((doc) => {
-    //                 setCardLabel(oldArray => [...oldArray, doc.color])
-    //             })
-    //         }
-    //     }
-    // }, [])
-
     const description = data.description;
 
     const handleCreateLabel = () => {
@@ -187,7 +176,7 @@ const CardDetail = ({ cardId, role, closeSettings }) => {
                                 </div>
                             )}
 
-                            {card.labels ? (
+                            {cardLabel ? (
                                 <div className="flex">
                                     {cardLabel.map((label) => {
                                         return (

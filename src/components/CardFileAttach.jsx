@@ -72,7 +72,7 @@ const CardFileAttach = ({role, cardId}) => {
                                 <div className="flex">
                                     <a
                                         target="_blank"
-                                        className="italic px-8 py-2 font-medium w-52"
+                                        className="italic px-2 py-2 font-medium w-52 text-blue-600"
                                         href={"http://" + link}
                                     >
                                         {link}
@@ -97,20 +97,7 @@ const CardFileAttach = ({role, cardId}) => {
                         return (
                             <div className="flex" key={file}>
                                 <div className="flex p-2 mt-1 w-52">
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        className="h-6 w-6 stroke-gray-600"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        strokeWidth={2}
-                                    >
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"
-                                        />
-                                    </svg>
-                                    <a href={fileList[index]} className="ml-2">
+                                    <a href={fileList[index]}>
                                         {file}
                                     </a>
                                 </div>
@@ -139,7 +126,7 @@ const CardFileAttach = ({role, cardId}) => {
             }
 
             {role === "Admin" ? (
-                <>
+                <div className="flex">
                     <input
                         onKeyDown={(e) => {
                             if (e.key === "Enter") {
@@ -148,11 +135,12 @@ const CardFileAttach = ({role, cardId}) => {
                                 });
                             }
                         }}
-                        className="absolute mt-4 right-0 rounded bg-gray-200 px-4 py-1"
+                        className="absolute mt-4 right-0 rounded px-4 py-1 border-2 truncate"
                         placeholder="Attach a Link"
                     />
+                    
 
-                    <div className="ml-3 mt-4 flex flex-col mb-4">
+                    <div className="ml-2 mt-4 flex flex-col mb-4">
                         <input
                             onChange={(e) => {
                                 setfileUpload(e.target.files[0]);
@@ -161,12 +149,12 @@ const CardFileAttach = ({role, cardId}) => {
                         />
                         <button
                             onClick={uploadImage}
-                            className="mt-2 px-4 py-1 w-1/4 bg-gray-100 hover:bg-gray-200 rounded border"
+                            className="mt-3 px-3 py-1 w-fit bg-blue-500 rounded text-white"
                         >
                             Submit
                         </button>
                     </div>
-                </>
+                </div>
             ) : null}
         </div>
     );
