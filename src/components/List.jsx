@@ -68,10 +68,24 @@ const List = () => {
     if (!result.destination) return;
 
     const { draggableId, source, destination } = result;
+    console.log(destination)
+    console.log(source)
+    console.log(draggableId)
+
+    let index = 0;
+
+    if(source.index < destination.index) {
+      index = destination.index + 1
+    }
+    else {
+      index = destination.index - 1
+    }
+
 
     const cardId = draggableId;
     const changes = {
       listId: destination.droppableId,
+      index: index
     };
 
     updateCardWithId(cardId, changes)
@@ -225,7 +239,7 @@ const List = () => {
           {lists.map((list) => {
             return (
               <div key={list.id} className="min-w-fit min-h-[150px] rounded-xl overflow-x-hidden shadow-lg m-6 border">
-                <NewList listId={list.id} listTitle={list.data().title} listDesc={list.data().description} />
+                <NewList listId={list.id} listTitle={list.data().title} listDesc={list.data().description} role = {role}/>
               </div>
             )
           })}

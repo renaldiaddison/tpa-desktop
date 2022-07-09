@@ -7,7 +7,7 @@ import { db } from '../firebase-config';
 import CardModel from './CardModel';
 import UpdateCardModal from './UpdateCardModal';
 
-const Card = ({ listId }) => {
+const Card = ({ listId, role }) => {
 
     const cardRef = collection(db, "card")
     const auth = getAuth()
@@ -23,42 +23,55 @@ const Card = ({ listId }) => {
         return () => unSubscribe()
     }, [])
 
+    useEffect(() => {
+        if (cardList) {
+            cardList.sort(compare)
+        }
+    })
+
+    function compare(a, b) {
+        if (a.data().index < b.data().index) {
+            return -1;
+        }
+        else if (a.data().index > b.data().index) {
+            return 1;
+        }
+        return 0;
+    }
+
     return (
         <div>
-            {cardList.map((card, index) => {
-                return (
-                    <div key={card.id}>
-                        <Draggable draggableId={card.id} index={index}>
-                            {(provided, snapshot) => {
-                                return (
-                                    <div
-                                        ref={provided.innerRef}
-                                        {...provided.draggableProps}
-                                        {...provided.dragHandleProps}
-                                        style={{
-                                            userSelect: "none",
-                                            padding: "16",
-                                            margin: "0 0 8px 0",
-                                            minHeight: "50px",
-                                            boxShadow: "0 1px 3px 0 rgb(0 0 0 / 0.1)",
-                                            backgroundColor: snapshot.isDragging
-                                                ? "white"
-                                                : "white",
-                                            color: "black",
-                                            verticalAlign: "middle",
-                                            ...provided.draggableProps.style,
-                                        }}
-                                    >
-                                        <CardModel card={card} />
-                                        {/* {<CardDetail />} */}
-                                    </div>
-                                );
-                            }}
-                        </Draggable>
+            {role === "" ?
 
-                    </div>
-                )
-            })}
+                <>
+                    {cardList.map((card, index) => {
+                        return (
+                            <div key={card.id}>
+                                <div
+                                    style={{
+                                        userSelect: "none",
+                                        padding: "16",
+                                        margin: "0 0 8px 0",
+                                        minHeight: "50px",
+                                        boxShadow: "0 1px 3px 0 rgb(0 0 0 / 0.1)",
+                                        color: "black",
+                                        verticalAlign: "middle",
+                                    }}
+                                >
+                                    <CardModel card={card} role={role} />
+                                </div>
+                            </div>
+                        )
+                    })}</>
+                :
+                <>{cardList.map((card, index) => {
+                    return (
+                        <div key={card.id}>
+                            <CardModel card={card} role={role} index={index} />
+                        </div>
+                    )
+                })}</>}
+
 
         </div>
     )

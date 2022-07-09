@@ -25,7 +25,7 @@ const Sidebar = () => {
           <div>
             
             <Link to="/home">
-              <div className=" p-2.5 mt-4 flex items-center rounded-md cursor-pointer hover:bg-gray-400 hover:text-white">
+              <div className=" p-2.5 mt-[-4px] flex items-center rounded-md cursor-pointer hover:bg-gray-400 hover:text-white">
                 <span className="text-[15px] ml-4">Home</span>
               </div>
             </Link>

@@ -3,6 +3,7 @@ import React from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { db } from '../firebase-config'
 import { useUserAuth } from '../Script/AuthContext'
+import { closeBoard, getBoardByWsId } from '../Script/Board'
 import { getWorkspaceById, getWorkspaceById2 } from '../Script/Workspace'
 
 const DeleteWorkspace = ({ closeDelete }) => {
@@ -24,6 +25,14 @@ const DeleteWorkspace = ({ closeDelete }) => {
         })
     }
 
+    const closeAllBoard = () => {
+        getBoardByWsId(p.id).then((doc) => {
+            for (let i = 0; i < doc.docs.length; i++) {
+                closeBoard(doc.docs[i].id)
+            }
+        })
+    }
+
     const deleteWorkspace = () => {
 
         getWorkspaceById2(p.id).then((ws) => {
@@ -32,6 +41,7 @@ const DeleteWorkspace = ({ closeDelete }) => {
             if (workspace.adminId.length === 1) {
                 const workspaceDoc = doc(db, "workspace", p.id)
                 deleteDoc(workspaceDoc)
+                closeAllBoard()
             }
             else if (workspace.adminId.length > 1) {
                 const workspaceDoc = doc(db, "workspace", p.id)
@@ -39,8 +49,8 @@ const DeleteWorkspace = ({ closeDelete }) => {
                     deleteConf: [user.uid]
                 })
 
-                for(let i = 0; i < workspace.adminId.length; i++) {
-                    if(workspace.adminId[i] === user.uid) {
+                for (let i = 0; i < workspace.adminId.length; i++) {
+                    if (workspace.adminId[i] === user.uid) {
                         continue
                     }
                     sendNotif(workspace.adminId[i], ws.data())

@@ -2,7 +2,7 @@ import { addDoc, collection } from 'firebase/firestore'
 import React, { useEffect } from 'react'
 import { db } from '../firebase-config'
 
-const CardModal = ({ closeModal, listId }) => {
+const CardModal = ({ closeModal, listId, index}) => {
 
     const cardRef = collection(db, "card")
 
@@ -12,7 +12,11 @@ const CardModal = ({ closeModal, listId }) => {
             e.preventDefault()
             addDoc(cardRef, {
                 title: e.target.cardTitle.value,
+                description: "",
+                labels: [],
+                checklist: [],
                 listId: listId,
+                index: index
             })
             closeModal(false)
         })

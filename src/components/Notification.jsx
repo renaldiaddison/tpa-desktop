@@ -6,7 +6,7 @@ import { addDoc, arrayRemove, arrayUnion, collection, deleteDoc, doc, documentId
 import { toastSuccess } from "../Script/Toast";
 import { db } from "../firebase-config";
 import { getWorkspaceById, getWorkspaceById2 } from "../Script/Workspace";
-import { getBoardById2 } from "../Script/Board";
+import { closeBoard, getBoardById2, getBoardByWsId } from "../Script/Board";
 
 function classNames(...classes) {
     return classes.filter(Boolean).join("");
@@ -64,6 +64,7 @@ const NotificationType = ({ notification, currUser, user }) => {
             const workspace = ws.data()
             if (workspace.adminId.length === workspace.deleteConf.length) {
                 deleteWorkspace()
+                closeAllBoard()
             }
         })
     }
@@ -104,6 +105,14 @@ const NotificationType = ({ notification, currUser, user }) => {
     const deleteWorkspace = async () => {
         const workspaceDoc = doc(db, "workspace", notification.wsId)
         await deleteDoc(workspaceDoc)
+    }
+
+    const closeAllBoard = () => {
+        getBoardByWsId(notification.wsId).then((doc) => {
+            for (let i = 0; i < doc.docs.length; i++) {
+                closeBoard(doc.docs[i].id)
+            }
+        })
     }
 
     const handleClickAcceptDelete = () => {

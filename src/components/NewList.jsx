@@ -6,7 +6,7 @@ import { db } from '../firebase-config'
 import AddCard from './AddCard'
 import Card from './Card'
 
-const NewList = ({ listId, listTitle, listDesc }) => {
+const NewList = ({ listId, listTitle, listDesc, role }) => {
 
 	const [showButton, setShowButton] = useState(false)
 
@@ -49,14 +49,29 @@ const NewList = ({ listId, listTitle, listDesc }) => {
 
 	return (
 		<div className="px-6 py-4 w-fit flex flex-col">
-			<input autoComplete="off" spellCheck="false" type="text" id={"title" + listId} name="title" className="font-bold text-xl mb-2 w-48 px-1 focus:outline-none truncate" defaultValue={listTitle} onChange={valueChanges} onKeyDown={enterPress} ref={ref}></input>
-			<input autoComplete="off" spellCheck="false" type="text" id={"desc" + listId} name="description" className="text-gray-700 text-base px-1 mb-3 focus:outline-none truncate" defaultValue={listDesc} onChange={valueChanges} onKeyDown={enterPress} ref={descRef}></input>
-			{showButton && <p onClick={() => { updateList(listId) }} className="w-fit inline-flex items-center px-3 py-1 mb-3 border border-transparent text-base font-medium justify-center rounded-md shadow-sm text-white bg-blue-500 hover:bg-blue-700 focus:outline-none cursor-pointer">
+			{role === "" ? <>
+				<p type="text" name="title" className="font-bold text-xl mb-2 w-48 px-1 truncate" ref={ref}>{listTitle}</p>
+				<p type="text" name="description" className="text-gray-700 text-base px-1 mb-3 truncate" ref={descRef}>{listDesc}</p>
+			</>
+				: <><input autoComplete="off" spellCheck="false" type="text" id={"title" + listId} name="title" className="font-bold text-xl mb-2 w-48 px-1 focus:outline-none truncate" defaultValue={listTitle} onChange={valueChanges} onKeyDown={enterPress} ref={ref}></input>
+					<input autoComplete="off" spellCheck="false" type="text" id={"desc" + listId} name="description" className="text-gray-700 text-base px-1 mb-3 focus:outline-none truncate" defaultValue={listDesc} onChange={valueChanges} onKeyDown={enterPress} ref={descRef}></input></>}
+
+			{role !== "" && showButton && <p onClick={() => { updateList(listId) }} className="w-fit inline-flex items-center px-3 py-1 mb-3 border border-transparent text-base font-medium justify-center rounded-md shadow-sm text-white bg-blue-500 hover:bg-blue-700 focus:outline-none cursor-pointer">
 				Save
 			</p>}
 			<div className="border-t border-slate-500"></div>
-			<AddCard listId={listId} />
-			<Droppable droppableId={listId}>
+			{role === "" ? null : <AddCard listId={listId} />}
+
+			{role === "" ? <div>
+				<div style={{
+					padding: 4,
+					width: 250,
+					minHeight: 300,
+				}}>
+
+					<Card listId={listId} role={role} />
+				</div>
+			</div> : <Droppable droppableId={listId}>
 				{(provided, snapshot) => {
 					return (
 						<div
@@ -68,12 +83,13 @@ const NewList = ({ listId, listTitle, listDesc }) => {
 								minHeight: 300,
 							}}
 						>
-							
-							<Card listId={listId} />
+
+							<Card listId={listId} role={role} />
 						</div>
 					);
 				}}
 			</Droppable>
+			}
 
 		</div>
 	)

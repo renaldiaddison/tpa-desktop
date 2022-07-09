@@ -7,9 +7,12 @@ import { db } from '../firebase-config';
 const BoardModal = ({ closeModal }) => {
   const p = useParams()
   const boardRef = collection(db, 'board')
+  const labelRef = collection(db, 'label')
 
   const auth = getAuth();
   let userID = "";
+
+  const colors = ["bg-green-400", "bg-yellow-400", "bg-orange-400", "bg-red-400", "bg-blue-400"]
   onAuthStateChanged(auth, (user) => {
     if (user) {
       const uid = user.uid
@@ -29,7 +32,19 @@ const BoardModal = ({ closeModal }) => {
         workspaceId: p.id,
         visibility: addForm.visibility.value,
         closed: false
+      }).then((doc) => {
+        for (let i = 0; i < 5; i++) {
+          addDoc(labelRef, {
+            name: "",
+            color: colors[i],
+            boardId: doc.id
+          })
+        }
       })
+
+
+
+
       closeModal(false)
     })
   }, [])
