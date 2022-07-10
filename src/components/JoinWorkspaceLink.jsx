@@ -34,7 +34,7 @@ const JoinWorkspaceLink = ({ closeModal }) => {
                         <div className="updateCard space-y-6" autoComplete="off" >
                             <div>
                                 {/* <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Card Title</label> */}
-                                <input onKeyDown={enterPress} spellCheck="false" type="text" className="border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-600 dark:text-white" placeholder="Invite Link" name="cardTitle" ref={refTitle} required></input>
+                                <input onKeyDown={enterPress} spellCheck="false" type="text" className="border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-600 dark:text-white" placeholder="Input Link" name="cardTitle" ref={refTitle} required></input>
                             </div>
                             <button onClick={handleClick} className="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-3 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
                         </div>
