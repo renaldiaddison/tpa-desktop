@@ -339,22 +339,10 @@ const CardDetail = ({ cardId, role, closeSettings }) => {
 
                                 <div
                                     onClick={async () => {
-                                        await getDoc(doc(db, "card", cardId)).then(
-                                            (snap) => {
-                                                if (snap.data().checklist)
-                                                    array.current = snap.data().checklist;
-                                                else array.current = [];
-                                            }
-                                        );
-
-                                        array.current.push({
+                                        addDoc(collection(db, "checklist"), {
                                             name: "Checklist",
-                                            items: [],
-                                        });
-
-                                        updateDoc(doc(db, "card", cardId), {
-                                            checklist: array.current,
-                                        });
+                                            cardId: cardId
+                                        })
                                     }}
                                     className="!CHECKLIST relative p-2 mt-2 flex bg-gray-100 rounded-sm hover:bg-gray-200 cursor-pointer"
                                 >

@@ -22,8 +22,6 @@ const CardFileAttach = ({role, cardId}) => {
     const [fileNameList, setFileNameList] = useState([]);
     const [needRefresh, setRefresh] = useState(false);
 
-    console.log(cardId)
-
     const uploadImage = () => {
         if (fileUpload == null) return;
         const imageRef = ref(

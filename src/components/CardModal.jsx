@@ -14,7 +14,6 @@ const CardModal = ({ closeModal, listId, index}) => {
                 title: e.target.cardTitle.value,
                 description: "",
                 labels: [],
-                checklist: [],
                 listId: listId,
                 index: index
             })

@@ -144,10 +144,6 @@ const List = () => {
       }
     })
 
-    // getBoardById(p.id).then((b) => {
-    //   setB(b)
-    // });
-
     return () => {
       setMember([])
       setAdmin([])
