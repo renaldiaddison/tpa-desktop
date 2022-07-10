@@ -16,7 +16,7 @@ import {
     updateDoc,
 } from "firebase/firestore";
 
-const CardFileAttach = ({role, cardId}) => {
+const CardFileAttach = ({ role, cardId }) => {
     const [fileUpload, setfileUpload] = useState(null);
     const [fileList, setFileList] = useState([]);
     const [fileNameList, setFileNameList] = useState([]);
@@ -136,7 +136,7 @@ const CardFileAttach = ({role, cardId}) => {
                         className="absolute mt-4 right-0 rounded px-4 py-1 border-2 truncate"
                         placeholder="Attach a Link"
                     />
-                    
+
 
                     <div className="ml-2 mt-4 flex flex-col mb-4">
                         <input
@@ -147,7 +147,7 @@ const CardFileAttach = ({role, cardId}) => {
                         />
                         <button
                             onClick={uploadImage}
-                            className="mt-3 px-3 py-1 w-fit bg-blue-500 rounded text-white"
+                            className="mt-3 px-3 py-1 w-fit bg-blue-500 rounded text-white hover:bg-blue-600"
                         >
                             Submit
                         </button>

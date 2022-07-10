@@ -25,9 +25,8 @@ import { useParams } from "react-router-dom";
 import { getLabel } from "../Script/Label";
 import CardLink from "./CardLink";
 import DueDate from "./DueDate";
-// import CardLink from "./CardLink";
+import CommentRenderer from "./CommentRenderer";
 // import CommentRenderer from "./CommentRenderer";
-// import DueDate from "./DueDate";
 
 const CardDetail = ({ cardId, role, closeSettings }) => {
     const colors = ["bg-green-400", "bg-yellow-400", "bg-orange-400", "bg-red-400", "bg-blue-400", "bg-cyan-400", "bg-purple-400", "bg-stone-400"]
@@ -52,8 +51,6 @@ const CardDetail = ({ cardId, role, closeSettings }) => {
     var array = useRef([]);
 
     const colRef = doc(db, "card", cardId);
-
-    console.log(role)
 
     useEffect(() => {
         const unsub = onSnapshot(colRef, (snapshot) => {
@@ -132,6 +129,18 @@ const CardDetail = ({ cardId, role, closeSettings }) => {
         }
     }
 
+    const getBg = (duedate, done) => {
+        if (duedate === true && done === false) {
+            return "bg-red-400"
+        }
+        else if (duedate === false && done === false) {
+            return "bg-yellow-400"
+        }
+        else {
+            return "bg-green-400"
+        }
+    }
+
 
     let opt = { weekday: "long", year: "numeric", month: "long", day: "numeric" };
 
@@ -170,14 +179,21 @@ const CardDetail = ({ cardId, role, closeSettings }) => {
                                 <div className="p-2 text-2xl">{card.title}</div>
                             )}
 
-                            {data.duedate && (
-                                <div className="absolute text-sm font-medium right-[14.5rem] top-[2.5rem] px-4 py-1 bg-gray-100 rounded">
-                                    <div>Due Date</div>
+                            {data.duedate ?
+                                <div onClick={async () => {
+                                    if (role !== "") {
+                                        await updateDoc(doc(db, "card", cardId), {
+                                            duedate: [data.duedate[0], !data.duedate[1]]
+                                        })
+                                    }
+
+                                }} className={"absolute text-sm font-medium right-[14.5rem] top-[2.5rem] px-4 py-4 rounded " + getBg((new Date(new Date().getTime()) >= new Date(data.duedate[0])), data.duedate[1])}>
+                                    <div>Due Dates</div>
                                     <p>
-                                        {new Date(data.duedate).toLocaleTimeString("en-US", opt)}
+                                        {new Date(data.duedate[0]).toLocaleTimeString("en-US", opt)}
                                     </p>
                                 </div>
-                            )}
+                                : null}
 
                             {cardLabel ? (
                                 <div className="flex">
@@ -208,15 +224,15 @@ const CardDetail = ({ cardId, role, closeSettings }) => {
                                     )}
                                 </p>
                             )}
-                            <CheckListRender cardId={cardId} role={role}/>
+                            <CheckListRender cardId={cardId} role={role} />
                             <CardFileAttach
                                 role={role}
                                 cardId={cardId}
                             />
-                            {/* <CommentRenderer
+                            <CommentRenderer
                                 role={role}
-                                card={cardId}
-                            /> */}
+                                cardId={cardId}
+                            />
                         </div>
 
                         {role !== "" ? (
@@ -259,7 +275,7 @@ const CardDetail = ({ cardId, role, closeSettings }) => {
                                                 color={label.data().color}
                                                 labelName={label.data().name}
                                                 labelId={label.id}
-                                                ref = {ref}
+                                                ref={ref}
                                             />
 
                                         </>
@@ -389,7 +405,7 @@ const CardDetail = ({ cardId, role, closeSettings }) => {
                                 </div>
 
                                 <CardLink cardId={cardId} />
-                                <DueDate cardId={cardId} />
+                                <DueDate cardId={cardId} cardName={data.title} />
                             </div>
                         ) : null}
                     </div>

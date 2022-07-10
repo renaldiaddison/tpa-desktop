@@ -3,11 +3,12 @@ import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
 import React, { Fragment, useContext, useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Disclosure, Menu, Transition } from "@headlessui/react";
-import { collection, collectionGroup, doc, onSnapshot, query, where } from 'firebase/firestore';
+import { addDoc, collection, collectionGroup, deleteDoc, doc, onSnapshot, query, where } from 'firebase/firestore';
 import { db } from '../firebase-config';
 import { BellIcon, MenuIcon, XIcon } from "@heroicons/react/outline";
 import Notification from './Notification';
 import { useUserAuth } from '../Script/AuthContext';
+import { getBoardById } from '../Script/Board';
 
 const Navbar = () => {
 
@@ -48,10 +49,49 @@ const Navbar = () => {
 
     return () => {
       document.removeEventListener("mousedown", handler);
-      // onSubscribe()
-      // onSubscribe2()
     };
   }, []);
+
+  useEffect(() => {
+    const ref = collection(db, "reminder")
+
+    const onsub = onSnapshot(ref, (snapshot) => {
+      snapshot.docs.map((dat) => {
+        if (dat.data().reminder) {
+          if (new Date(dat.data().reminder) <= new Date(new Date().getTime())) {
+            getBoardById(dat.data().board).then((data) => {
+              for (let i = 0; i < data.memberId.length; i++) {
+                sendNotif(data.memberId[i], dat.data().name, dat.data().board)
+              }
+
+              for (let i = 0; i < data.adminId.length; i++) {
+                sendNotif(data.adminId[i], dat.data().name, dat.data().board)
+              }
+            })
+
+            deleteDoc(doc(db, "reminder", dat.id))
+          }
+        }
+      })
+    })
+
+    return () => {
+      onsub()
+    }
+
+  }, [])
+
+  const sendNotif = (id, cardName, boardId) => {
+    const notifRef = collection(db, "notification")
+    return addDoc(notifRef, {
+      title: "",
+      content: "Card '" + cardName + "' is due soon",
+      senderId: "CHello.com",
+      receiveId: id,
+      type: "announce",
+      wsId: boardId
+    })
+  }
 
   const logOut = async () => {
     await signOut(auth)

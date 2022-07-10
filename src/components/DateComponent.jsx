@@ -1,20 +1,20 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import setHours from "date-fns/setHours";
 import setMinutes from "date-fns/setMinutes";
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Select from "react-select";
-import { doc, serverTimestamp, setDoc, updateDoc } from "firebase/firestore";
+import { doc, getDoc, serverTimestamp, setDoc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase-config";
 import { useParams } from "react-router-dom";
 
-const DateComponent = ({ cardId }) => {
+const DateComponent = ({ cardId, cardName}) => {
 
     const p = useParams()
 
     const [selectedDate, setSelectedDate] = useState(
-        new Date(new Date().getTime() + 86400000)
+        new Date(new Date().getTime() + 900000)
     );
 
     const options = [
@@ -23,21 +23,20 @@ const DateComponent = ({ cardId }) => {
             label: "No Reminder",
         },
         {
+            value: 900000,
+            label: "15 Minutes Before",
+        },
+        {
+            value: 3600000,
+            label: "1 Hour Before",
+        },
+        {
             value: 86400000,
             label: "1 Day Before",
         },
-        {
-            value: 604800000,
-            label: "7 Day Before",
-        },
-        {
-            value: 2592000000,
-            label: "1 Month Before",
-        },
     ];
-
     const filterPassedTime = (time) => {
-        const currentDate = new Date(new Date().getTime() + 86400000);
+        const currentDate = new Date(new Date().getTime() + 900000);
         const selectedDate = new Date(time);
 
         return currentDate.getTime() < selectedDate.getTime();
@@ -49,17 +48,17 @@ const DateComponent = ({ cardId }) => {
         const selectForm = document.querySelector(".selectForm");
         e.preventDefault();
         updateDoc(doc(db, "card", cardId), {
-            duedate: selectedDate.getTime(),
+            duedate: [selectedDate.getTime(), false],
         });
+        const selected = selectRef.current.getValue()
 
-        if (selectForm.select.value != 0) {
-            const reminderTime = selectedDate.getTime() - selectForm.select.value;
-
-            console.log(new Date(reminderTime));
+        if (selected.length !== 0) {
+            const reminderTime = selectedDate.getTime() - selected[0].value;
 
             setDoc(doc(db, "reminder", cardId), {
                 reminder: reminderTime,
                 board: p.id,
+                name: cardName
             });
         }
     };
@@ -71,11 +70,11 @@ const DateComponent = ({ cardId }) => {
                     className="bg-gray-50 border-2 border-gray-500 flex justify-center items-center ml-20 px-2 py-0.5 rounded"
                     selected={selectedDate}
                     onChange={(date) => setSelectedDate(date)}
-                    minDate={new Date(new Date().getTime() + 86400000)}
+                    minDate={new Date(new Date().getTime() + 900000)}
                     timeIntervals={60}
                     showTimeSelect
-                    placeholderText="Pick a date and time"
                     filterTime={filterPassedTime}
+                    placeholderText="Pick a date and time"
                     dateFormat="MMMM d, yyyy h:mm aa"
                 />
             </div>

@@ -38,8 +38,13 @@ const Sidebar = () => {
               <span className="text-[15px] ml-4">Boards</span>
             </div> */}
             <Link to="/closedBoards">
-              <div className="p-2.5 mt-4 mb-6 flex items-center rounded-md cursor-pointer hover:bg-gray-400 hover:text-white">
+              <div className="p-2.5 mt-4 mb-4 flex items-center rounded-md cursor-pointer hover:bg-gray-400 hover:text-white">
                 <span className="text-[15px] ml-4">Closed Boards</span>
+              </div>
+            </Link>
+            <Link to="/favoriteBoard">
+              <div className="p-2.5 mt-4 mb-6 flex items-center rounded-md cursor-pointer hover:bg-gray-400 hover:text-white">
+                <span className="text-[15px] ml-4">Favorite Boards</span>
               </div>
             </Link>
             <div className="border-t border-slate-500"></div>

@@ -12,6 +12,7 @@ import AcceptInviteBoard from './pages/AcceptInviteBoard';
 import ListWorkspace from './pages/Public';
 import ListBoard from './pages/ClosedBoard';
 import CardPage from './pages/CardPage';
+import FavoriteBoard from './pages/FavoriteBoard';
 
 
 function App() {
@@ -42,6 +43,8 @@ function App() {
           <Route exact path='/home' element={<HomePage />} />
           <Route exact path='/public' element={<ListWorkspace />} />
           <Route exact path='/closedBoards' element={<ListBoard />} />
+          <Route exact path='/favoriteBoard' element={<FavoriteBoard />} />
+          
           <Route exact path='/card/:bId/:id/' element={<CardPage />}></Route>
         </Routes>
       </UserAuthContextProvider>

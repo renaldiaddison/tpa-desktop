@@ -18,6 +18,7 @@ export function UserAuthContextProvider({ children }) {
   const navigate = useNavigate();
   const [user, setUser] = useState();
   const [userData, setUserData] = useState();
+  const [userId, setUserId] = useState();
   const location = useLocation();
 
   useEffect(() => {
@@ -29,6 +30,7 @@ export function UserAuthContextProvider({ children }) {
 
       querySnapShot.forEach((doc) => {
         setUserData(doc.data());
+        setUserId(doc.id)
       });
     });
     return () => {
@@ -37,7 +39,7 @@ export function UserAuthContextProvider({ children }) {
   }, [location]);
 
   return (
-    <userAuthContext.Provider value={{ user, userData }}>
+    <userAuthContext.Provider value={{ user, userData, userId }}>
       {children}
     </userAuthContext.Provider>
   );

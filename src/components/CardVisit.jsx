@@ -24,9 +24,9 @@ import CardFileAttach from "./CardFileAttach";
 import { useParams } from "react-router-dom";
 import { getLabel } from "../Script/Label";
 import CardLink from "./CardLink";
-// import CardLink from "./CardLink";
+import DueDate from "./DueDate";
+import CommentRenderer from "./CommentRenderer";
 // import CommentRenderer from "./CommentRenderer";
-// import DueDate from "./DueDate";
 
 const CardVisit = ({ cardId, role, boardId }) => {
     const colors = ["bg-green-400", "bg-yellow-400", "bg-orange-400", "bg-red-400", "bg-blue-400", "bg-cyan-400", "bg-purple-400", "bg-stone-400"]
@@ -80,6 +80,14 @@ const CardVisit = ({ cardId, role, boardId }) => {
         }
     }, []);
 
+    const handleChangeTitle = (e) => {
+        if (e.key === "Enter") {
+            updateDoc(doc(db, "card", cardId), {
+                title: e.target.value,
+            });
+        }
+    };
+
     useEffect(() => {
         if (quill) {
             quill.clipboard.dangerouslyPasteHTML(
@@ -106,7 +114,7 @@ const CardVisit = ({ cardId, role, boardId }) => {
         addDoc(collection(db, "label"), {
             name: labelRef.current.value,
             color: selectedColor,
-            boardId: p.id
+            boardId: p
         })
 
         labelRef.current.value = "";
@@ -121,6 +129,18 @@ const CardVisit = ({ cardId, role, boardId }) => {
         }
     }
 
+    const getBg = (duedate, done) => {
+        if (duedate === true && done === false) {
+            return "bg-red-400"
+        }
+        else if (duedate === false && done === false) {
+            return "bg-yellow-400"
+        }
+        else {
+            return "bg-green-400"
+        }
+    }
+
 
     let opt = { weekday: "long", year: "numeric", month: "long", day: "numeric" };
 
@@ -130,15 +150,33 @@ const CardVisit = ({ cardId, role, boardId }) => {
                 <div className="bg-white p-10 rounded w-2/3 min-h-[33rem] h-fit relative">
                     <div className="!DIVIDER flex">
                         <div className="!LEFT flex flex-col grow">
-                            <div className="p-2 text-2xl">{card.title}</div>
-                            {data.duedate && (
-                                <div className="absolute text-sm font-medium right-[14.5rem] top-[2.5rem] px-4 py-1 bg-gray-100 rounded">
-                                    <div>Due Date</div>
+                            {role !== "" ? (
+                                <input
+                                    onKeyDown={(e) => {
+                                        handleChangeTitle(e, card);
+                                    }}
+                                    defaultValue={card.title}
+                                    className="p-2 text-2xl"
+                                ></input>
+                            ) : (
+                                <div className="p-2 text-2xl">{card.title}</div>
+                            )}
+
+                            {data.duedate ?
+                                <div onClick={async () => {
+                                    if (role !== "") {
+                                        await updateDoc(doc(db, "card", cardId), {
+                                            duedate: [data.duedate[0], !data.duedate[1]]
+                                        })
+                                    }
+
+                                }} className={"absolute text-sm font-medium right-[14.5rem] top-[2.5rem] px-4 py-4 rounded " + getBg((new Date(new Date().getTime()) >= new Date(data.duedate[0])), data.duedate[1])}>
+                                    <div>Due Dates</div>
                                     <p>
-                                        {new Date(data.duedate).toLocaleTimeString("en-US", opt)}
+                                        {new Date(data.duedate[0]).toLocaleTimeString("en-US", opt)}
                                     </p>
                                 </div>
-                            )}
+                                : null}
 
                             {cardLabel ? (
                                 <div className="flex">
@@ -174,10 +212,10 @@ const CardVisit = ({ cardId, role, boardId }) => {
                                 role={role}
                                 cardId={cardId}
                             />
-                            {/* <CommentRenderer
+                            <CommentRenderer
                                 role={role}
-                                card={cardId}
-                            /> */}
+                                cardId={cardId}
+                            />
                         </div>
 
                         {role !== "" ? (
@@ -326,6 +364,9 @@ const CardVisit = ({ cardId, role, boardId }) => {
                                 </div>
 
                                 <div
+                                    onClick={() => {
+                                        deleteDoc(doc(db, "card", cardId));
+                                    }}
                                     className="!ARCHIVE relative p-2 mt-2 flex bg-gray-100 rounded-sm hover:bg-gray-200 cursor-pointer"
                                 >
                                     <svg
@@ -346,7 +387,7 @@ const CardVisit = ({ cardId, role, boardId }) => {
                                 </div>
 
                                 <CardLink cardId={cardId} />
-                                {/* <DueDate card={cardId} board={props.board} /> */}
+                                <DueDate cardId={cardId} cardName={data.title} />
                             </div>
                         ) : null}
                     </div>

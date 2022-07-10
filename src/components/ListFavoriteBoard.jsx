@@ -5,90 +5,64 @@ import { useState } from 'react'
 import { useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { db } from '../firebase-config'
-import JoinWorkspaceLink from './JoinWorkspaceLink'
-import PublicSearch from './PublicSearch'
 
-const Public = () => {
 
-    const [workspaces, setWorkspaces] = useState([])
-    const [boards, setBoards] = useState([])
+const ListFavoriteBoard = () => {
+
+
+    const [boardList, setBoardList] = useState([])
+    const [favorite, setFavorite] = useState([])
+
     const auth = getAuth()
 
     const location = useLocation()
-    const [favorite, setFavorite] = useState([])
-    const favoriteRef = collection(db, "favorite")
+
+    const addBoard = ((board) => {
+        setBoardList((oldArray) => [...oldArray, board]);
+    })
+
 
     useEffect(() => {
-        const workspaceRef = collection(db, 'workspace')
-
-        const boardRef = collection(db, 'board')
-
-        const q3 = query(workspaceRef, where("visibility", "==", "Public"))
-        const onSubscribe = onSnapshot(q3, (snapshot) => {
-            setWorkspaces(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
-        })
-
-        const q4 = query(boardRef, where("visibility", "==", "Public"), where("closed", "==", false))
-        const onSubscribe2 = onSnapshot(q4, (snapshot) => {
-            setBoards(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
-        })
 
         onAuthStateChanged(auth, (user) => {
-            const q7 = query(favoriteRef, where("userId", "==", user.uid))
-            onSnapshot(q7, (snapshot) => {
+            const q = query(collection(db, "favorite"), where("userId", "==", user.uid))
+            onSnapshot(q, (snapshot) => {
                 if (snapshot.docs[0]) {
                     setFavorite(snapshot.docs[0])
+                    setBoardList([])
+                    for (let i = 0; i < snapshot.docs[0].data().boardId.length; i++) {
+                        const q2 = doc(db, "board", snapshot.docs[0].data().boardId[i])
+                        onSnapshot(q2, (data) => {
+                            addBoard(data)
+                        })
+                    }
                 }
+
             })
+
         })
 
-
         return () => {
-            onSubscribe()
-            onSubscribe2()
-
+            setBoardList([])
         }
+
+
     }, [location])
 
     return (
+
         <div className="h-[90vh] w-screen overflow-y-auto">
 
-            <div className="pt-4 px-6 pb-6">
-                <PublicSearch board={boards} workspace={workspaces}></PublicSearch>
-            </div>
-            {workspaces.length === 0 ? null : <><div className="flex pt-4 pl-6">
-                <p className="font-bold text-xl pr-2">{"Public Workspaces (" + workspaces.length + ")"}</p>
+            {boardList.length === 0 ? null : <><div className="flex pt-4 pl-6">
+                <p className="font-bold text-xl pr-2">{"Favorite Boards (" + boardList.length + ")"}</p>
             </div>
                 <div className="flex flex-wrap">
-                    {workspaces.map((workspace) => {
-                        return (
-                            <Link to={"/home/workspace/" + workspace.id} key={workspace.id}>{
-                                workspace.visibility === "Public" ?
-                                    <div className="w-[270px] h-[150px] rounded-xl overflow-hidden shadow-lg m-6 border">
-                                        <div className="px-6 py-4">
-                                            <div className="font-bold text-xl mb-2">{workspace.name}</div>
-                                            <p className="text-gray-700 text-base">
-                                                {workspace.description}
-                                            </p>
-                                        </div>
-                                    </div> : null}
-                            </Link>
-                        )
-                    })}
-                </div></>}
-
-
-            {boards.length === 0 ? null : <><div className="flex pt-4 pl-6">
-                <p className="font-bold text-xl pr-2">{"Public Boards (" + boards.length + ")"}</p>
-            </div>
-                <div className="flex flex-wrap">
-                    {boards.map((board) => {
+                    {boardList.map((board) => {
                         return (
                             <>
-
                                 <div className="w-[270px] h-[150px] rounded-xl overflow-hidden shadow-lg m-6 border relative" key={board.id}>
 
-                                    {favorite.data().boardId && favorite.data().boardId.includes(board.id) ? <svg onClick={() => {
+                                    {favorite && favorite.data().boardId.includes(board.id) ? <svg onClick={() => {
                                         if (favorite.data().boardId && favorite.data().boardId.includes(board.id)) {
                                             updateDoc(doc(db, "favorite", favorite.id), {
                                                 boardId: arrayRemove(board.id)
@@ -118,9 +92,9 @@ const Public = () => {
 
                                     <Link to={"/home/board/" + board.id}>
                                         <div className="px-6 py-4 h-full">
-                                            <div className="font-bold text-xl mb-2">{board.name}</div>
+                                            <div className="font-bold text-xl mb-2">{board.data().name}</div>
                                             <p className="text-gray-700 text-base">
-                                                {board.description}
+                                                {board.data().description}
                                             </p>
                                         </div>
                                     </Link>
@@ -131,13 +105,9 @@ const Public = () => {
                     })}
                 </div></>}
 
-
-
-
-
         </div>
 
     )
 }
 
-export default Public
+export default ListFavoriteBoard

@@ -15,7 +15,8 @@ const CardModal = ({ closeModal, listId, index}) => {
                 description: "",
                 labels: [],
                 listId: listId,
-                index: index
+                index: index,
+                duedate: []
             })
             closeModal(false)
         })

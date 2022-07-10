@@ -98,7 +98,7 @@ const Checklist = ({ cardId, index, name, checkId, role }) => {
 
                 {role !== "" ? <button
                     onClick={handleAdd}
-                    className="p-2 w-32 mt-2 bg-blue-400 rounded text-white"
+                    className="p-2 mt-2 bg-blue-500 rounded text-white hover:bg-blue-600"
                 >
                     Add Item
                 </button> : null}
