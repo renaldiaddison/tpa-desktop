@@ -71,7 +71,7 @@ const CardFileAttach = ({role, cardId}) => {
                                     <a
                                         target="_blank"
                                         className="italic px-2 py-2 font-medium w-52 text-blue-600"
-                                        href={"http://" + link}
+                                        href={link}
                                     >
                                         {link}
                                     </a>

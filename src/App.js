@@ -11,6 +11,7 @@ import { UserAuthContextProvider } from './Script/AuthContext';
 import AcceptInviteBoard from './pages/AcceptInviteBoard';
 import ListWorkspace from './pages/Public';
 import ListBoard from './pages/ClosedBoard';
+import CardPage from './pages/CardPage';
 
 
 function App() {
@@ -32,16 +33,17 @@ function App() {
       <ToastContainer></ToastContainer>
       <UserAuthContextProvider>
 
-      <Routes>
-        <Route exact path='*' element={<Layout />} />
-        <Route exact path='/home/workspace/:id' element={<WorkspacePage />}></Route>
-        <Route exact path='/home/board/:id' element={<BoardPage />}></Route>
-        <Route exact path='/invite-link/:id' element={<AcceptInvite/>}></Route>
-        <Route exact path='/invite-link-board/:id' element={<AcceptInviteBoard/>}></Route>
-        <Route exact path='/home' element={<HomePage />} />
-        <Route exact path='/public' element={<ListWorkspace />} />
-        <Route exact path='/closedBoards' element={<ListBoard />} />
-      </Routes>
+        <Routes>
+          <Route exact path='*' element={<Layout />} />
+          <Route exact path='/home/workspace/:id' element={<WorkspacePage />}></Route>
+          <Route exact path='/home/board/:id' element={<BoardPage />}></Route>
+          <Route exact path='/invite-link/:id' element={<AcceptInvite />}></Route>
+          <Route exact path='/invite-link-board/:id' element={<AcceptInviteBoard />}></Route>
+          <Route exact path='/home' element={<HomePage />} />
+          <Route exact path='/public' element={<ListWorkspace />} />
+          <Route exact path='/closedBoards' element={<ListBoard />} />
+          <Route exact path='/card/:bId/:id/' element={<CardPage />}></Route>
+        </Routes>
       </UserAuthContextProvider>
     </div>
   )

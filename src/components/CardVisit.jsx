@@ -24,12 +24,11 @@ import CardFileAttach from "./CardFileAttach";
 import { useParams } from "react-router-dom";
 import { getLabel } from "../Script/Label";
 import CardLink from "./CardLink";
-import DueDate from "./DueDate";
 // import CardLink from "./CardLink";
 // import CommentRenderer from "./CommentRenderer";
 // import DueDate from "./DueDate";
 
-const CardDetail = ({ cardId, role, closeSettings }) => {
+const CardVisit = ({ cardId, role, boardId }) => {
     const colors = ["bg-green-400", "bg-yellow-400", "bg-orange-400", "bg-red-400", "bg-blue-400", "bg-cyan-400", "bg-purple-400", "bg-stone-400"]
 
     let selectedColor = "bg-green-400"
@@ -45,15 +44,13 @@ const CardDetail = ({ cardId, role, closeSettings }) => {
     const [labels, setLabels] = useState([]);
     var card = data;
 
-    const p = useParams()
+    const p = boardId
 
     var ref = useRef();
     var ref2 = useRef();
     var array = useRef([]);
 
     const colRef = doc(db, "card", cardId);
-
-    console.log(role)
 
     useEffect(() => {
         const unsub = onSnapshot(colRef, (snapshot) => {
@@ -70,7 +67,7 @@ const CardDetail = ({ cardId, role, closeSettings }) => {
         });
 
         const labelRef = collection(db, "label")
-        const q = query(labelRef, where("boardId", "==", p.id))
+        const q = query(labelRef, where("boardId", "==", p))
 
         const unSub2 = onSnapshot(q, (snapshot) => {
             setLabels(snapshot.docs.map((doc) => doc))
@@ -82,14 +79,6 @@ const CardDetail = ({ cardId, role, closeSettings }) => {
             setCardLabel([])
         }
     }, []);
-
-    const handleChangeTitle = (e) => {
-        if (e.key === "Enter") {
-            updateDoc(doc(db, "card", cardId), {
-                title: e.target.value,
-            });
-        }
-    };
 
     useEffect(() => {
         if (quill) {
@@ -139,37 +128,9 @@ const CardDetail = ({ cardId, role, closeSettings }) => {
         <>
             <div className="backdrop-blur-sm z-[100] inset-0 bg-black bg-opacity-30 h-screen flex justify-center  overflow-y-scroll p-28 fixed">
                 <div className="bg-white p-10 rounded w-2/3 min-h-[33rem] h-fit relative">
-                    <svg
-                        onClick={() => {
-                            closeSettings(false)
-                        }}
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-6 w-6 absolute cursor-pointer right-4 top-4"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        strokeWidth={2}
-                    >
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M6 18L18 6M6 6l12 12"
-                        />
-                    </svg>
                     <div className="!DIVIDER flex">
                         <div className="!LEFT flex flex-col grow">
-                            {role !== "" ? (
-                                <input
-                                    onKeyDown={(e) => {
-                                        handleChangeTitle(e, card);
-                                    }}
-                                    defaultValue={card.title}
-                                    className="p-2 text-2xl"
-                                ></input>
-                            ) : (
-                                <div className="p-2 text-2xl">{card.title}</div>
-                            )}
-
+                            <div className="p-2 text-2xl">{card.title}</div>
                             {data.duedate && (
                                 <div className="absolute text-sm font-medium right-[14.5rem] top-[2.5rem] px-4 py-1 bg-gray-100 rounded">
                                     <div>Due Date</div>
@@ -208,7 +169,7 @@ const CardDetail = ({ cardId, role, closeSettings }) => {
                                     )}
                                 </p>
                             )}
-                            <CheckListRender cardId={cardId} role={role}/>
+                            <CheckListRender cardId={cardId} role={role} />
                             <CardFileAttach
                                 role={role}
                                 cardId={cardId}
@@ -259,7 +220,7 @@ const CardDetail = ({ cardId, role, closeSettings }) => {
                                                 color={label.data().color}
                                                 labelName={label.data().name}
                                                 labelId={label.id}
-                                                ref = {ref}
+                                                ref={ref}
                                             />
 
                                         </>
@@ -365,10 +326,6 @@ const CardDetail = ({ cardId, role, closeSettings }) => {
                                 </div>
 
                                 <div
-                                    onClick={() => {
-                                        closeSettings(false);
-                                        deleteDoc(doc(db, "card", cardId));
-                                    }}
                                     className="!ARCHIVE relative p-2 mt-2 flex bg-gray-100 rounded-sm hover:bg-gray-200 cursor-pointer"
                                 >
                                     <svg
@@ -389,7 +346,7 @@ const CardDetail = ({ cardId, role, closeSettings }) => {
                                 </div>
 
                                 <CardLink cardId={cardId} />
-                                <DueDate cardId={cardId} />
+                                {/* <DueDate card={cardId} board={props.board} /> */}
                             </div>
                         ) : null}
                     </div>
@@ -399,4 +356,4 @@ const CardDetail = ({ cardId, role, closeSettings }) => {
     );
 };
 
-export default CardDetail;
+export default CardVisit;

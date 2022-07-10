@@ -3,7 +3,7 @@ import { Fragment, useEffect, useState } from "react";
 import { db } from "../firebase-config";
 import Checklist from "./Checklist";
 
-const CheckListRender = ({ cardId }) => {
+const CheckListRender = ({ cardId, role }) => {
     const [checklists, setChecklists] = useState([]);
 
 
@@ -30,6 +30,7 @@ const CheckListRender = ({ cardId }) => {
                             name={checklist.data().name}
                             checkId = {checklist.id}
                             index={index}
+                            role = {role}
                         />
                     );
                 })}
