@@ -25,7 +25,7 @@ const Board = () => {
   const location = useLocation();
 
   const [ws, setWs] = useState([])
-  const [favorite, setFavorite] = useState([])
+  const [favorite, setFavorite] = useState()
 
   const [showSettings, setShowSettings] = useState(false)
   const [showInvite, setShowInvite] = useState(false)
@@ -75,9 +75,10 @@ const Board = () => {
     const onSubscribe2 = onSnapshot(q2, (snapshot) => {
       if (snapshot.docs[0]) {
         setWsName(snapshot.docs[0].data().name)
+        setMember([])
         snapshot.docs[0].data().memberId.map((memberId) => {
           const q3 = query(userRef, where("userId", "==", memberId));
-          setMember([])
+
           onSnapshot(q3, (snapshot2) => {
             if (snapshot2.docs[0]) {
               const currentUser = snapshot2.docs[0].data();
@@ -86,15 +87,17 @@ const Board = () => {
           })
         })
       }
+
     })
 
     const q4 = query(workspaceRef, where(documentId(), "==", p.id))
     const onSubscribe3 = onSnapshot(q4, (snapshot) => {
       if (snapshot.docs[0]) {
         setWsName(snapshot.docs[0].data().name)
+        setAdmin([])
         snapshot.docs[0].data().adminId.map((adminId) => {
           const q5 = query(userRef, where("userId", "==", adminId));
-          setAdmin([])
+
           onSnapshot(q5, (snapshot2) => {
             if (snapshot2.docs[0]) {
               const currentUser = snapshot2.docs[0].data();
@@ -271,7 +274,7 @@ const Board = () => {
 
                 <div className="w-[270px] h-[150px] rounded-xl overflow-hidden shadow-lg m-6 border relative" key={board.id}>
 
-                  {favorite.data().boardId && favorite.data().boardId.includes(board.id) ? <svg onClick={() => {
+                  {favorite?.data().boardId && favorite.data().boardId.includes(board.id) ? <svg onClick={() => {
                     if (favorite.data().boardId && favorite.data().boardId.includes(board.id)) {
                       updateDoc(doc(db, "favorite", favorite.id), {
                         boardId: arrayRemove(board.id)

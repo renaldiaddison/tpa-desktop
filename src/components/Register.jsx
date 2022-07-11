@@ -9,6 +9,7 @@ import { db } from '../firebase-config'
 const Register = () => {
 
   const userRef = collection(db, "user")
+  const favRef = collection(db, "favorite")
 
   const navigate = useNavigate()
 
@@ -21,7 +22,13 @@ const Register = () => {
       education: "",
       email: user.email,
       notification: true,
-      workspace: []
+    });
+  }
+
+  const insertFavorite = async (user) => {
+    await addDoc(favRef, {
+      boardId: [],
+      userId: user.uid,
     });
   }
 
@@ -33,6 +40,7 @@ const Register = () => {
         .then((userCredential) => {
           const user = userCredential.user;
           insertUser(user, e.target.name.value)
+          insertFavorite(user)
           navigate('/home')
         })
         .catch((error) => {

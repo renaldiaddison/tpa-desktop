@@ -14,17 +14,25 @@ const CardModel = ({ card, role, index }) => {
     const colRef = doc(db, "card", card.id);
 
     useEffect(() => {
-        const unsub = onSnapshot(colRef, (snapshot) => {
-            setCardLabel([])
-            snapshot.data().labels.map((label) => {
-                const q = query(collection(db, "label"), where(documentId(), "==", label))
-                onSnapshot(q, (snapshot) => {
-                    if (snapshot.docs[0]) {
-                        setCardLabel(oldArray => [...oldArray, snapshot.docs[0].data().color])
-                    }
-                })
-            })
-        });
+        // const unsub = onSnapshot(colRef, (snapshot) => {
+        //     setCardLabel([])
+        //     snapshot.data().labels.map((label) => {
+        //         const q = query(collection(db, "label"), where(documentId(), "==", label))
+        //         onSnapshot(q, (snapshot) => {
+        //             if (snapshot.docs[0]) {
+        //                 setCardLabel(oldArray => [...oldArray, snapshot.docs[0].data().color])
+        //             }
+        //         })
+        //     })
+        // });
+
+        const q10 = query(collection(db, "label"), where("card", "array-contains", card.id))
+        const unsub = onSnapshot(q10, (snapshot) => {
+            if (snapshot) {
+                setCardLabel(snapshot.docs.map((doc) => doc))
+            }
+        })
+
 
 
         return () => {
@@ -106,8 +114,8 @@ const CardModel = ({ card, role, index }) => {
                                             {cardLabel.map((label) => {
                                                 return (
                                                     <div
-                                                        key={label}
-                                                        className={`h-2 w-10 ${label} rounded-md mt-1 ml-3`}
+                                                        key={label.id}
+                                                        className={`h-2 w-10 ${label.data().color} rounded-md mt-1 ml-3`}
                                                     ></div>
 
                                                 );

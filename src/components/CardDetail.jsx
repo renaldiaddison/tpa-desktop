@@ -22,7 +22,6 @@ import { useQuill } from "react-quilljs";
 import "quill/dist/quill.snow.css";
 import CardFileAttach from "./CardFileAttach";
 import { useParams } from "react-router-dom";
-import { getLabel } from "../Script/Label";
 import CardLink from "./CardLink";
 import DueDate from "./DueDate";
 import CommentRenderer from "./CommentRenderer";
@@ -52,19 +51,18 @@ const CardDetail = ({ cardId, role, closeSettings }) => {
 
     const colRef = doc(db, "card", cardId);
 
+
     useEffect(() => {
         const unsub = onSnapshot(colRef, (snapshot) => {
             setData(snapshot.data());
-            setCardLabel([])
-            snapshot.data().labels.map((label) => {
-                const q = query(collection(db, "label"), where(documentId(), "==", label))
-                onSnapshot(q, (snapshot) => {
-                    if (snapshot.docs[0]) {
-                        setCardLabel(oldArray => [...oldArray, snapshot.docs[0].data().color])
-                    }
-                })
-            })
         });
+
+        const q10 = query(collection(db, "label"), where("card", "array-contains", cardId))
+        onSnapshot(q10, (snapshot) => {
+            if (snapshot) {
+                setCardLabel(snapshot.docs.map((doc) => doc))
+            }
+        })
 
         const labelRef = collection(db, "label")
         const q = query(labelRef, where("boardId", "==", p.id))
@@ -74,9 +72,10 @@ const CardDetail = ({ cardId, role, closeSettings }) => {
         })
 
         return () => {
+            setCardLabel([])
             unsub();
             unSub2()
-            setCardLabel([])
+
         }
     }, []);
 
@@ -201,8 +200,8 @@ const CardDetail = ({ cardId, role, closeSettings }) => {
                                         return (
                                             <>
                                                 <div
-                                                    key={label}
-                                                    className={`h-2 w-10 ${label} rounded-md mt-1 ml-3`}
+                                                    key={label.id}
+                                                    className={`h-2 w-10 ${label.data().color} rounded-md mt-1 ml-3`}
                                                 ></div>
                                             </>
 
@@ -275,7 +274,6 @@ const CardDetail = ({ cardId, role, closeSettings }) => {
                                                 color={label.data().color}
                                                 labelName={label.data().name}
                                                 labelId={label.id}
-                                                ref={ref}
                                             />
 
                                         </>

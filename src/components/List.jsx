@@ -74,7 +74,7 @@ const List = () => {
 
     let index = 0;
 
-    if(source.index < destination.index) {
+    if (source.index < destination.index) {
       index = destination.index + 1
     }
     else {
@@ -115,9 +115,10 @@ const List = () => {
     const q2 = query(boardRef, where(documentId(), "==", p.id))
     const onSubscribe2 = onSnapshot(q2, (snapshot) => {
       if (snapshot.docs[0]) {
+        setMember([])
         snapshot.docs[0].data().memberId.map((memberId) => {
           const q3 = query(userRef, where("userId", "==", memberId));
-          setMember([])
+
           onSnapshot(q3, (snapshot2) => {
             if (snapshot2.docs[0]) {
               const currentUser = snapshot2.docs[0].data();
@@ -131,9 +132,10 @@ const List = () => {
     const q4 = query(boardRef, where(documentId(), "==", p.id))
     const onSubscribe3 = onSnapshot(q4, (snapshot) => {
       if (snapshot.docs[0]) {
+        setAdmin([])
         snapshot.docs[0].data().adminId.map((adminId) => {
           const q5 = query(userRef, where("userId", "==", adminId));
-          setAdmin([])
+
           onSnapshot(q5, (snapshot2) => {
             if (snapshot2.docs[0]) {
               const currentUser = snapshot2.docs[0].data();
@@ -235,7 +237,7 @@ const List = () => {
           {lists.map((list) => {
             return (
               <div key={list.id} className="min-w-fit min-h-[150px] rounded-xl overflow-x-hidden shadow-lg m-6 border">
-                <NewList listId={list.id} listTitle={list.data().title} listDesc={list.data().description} role = {role}/>
+                <NewList listId={list.id} listTitle={list.data().title} listDesc={list.data().description} role={role} />
               </div>
             )
           })}

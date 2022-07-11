@@ -108,7 +108,7 @@ const CardVisit = ({ cardId, role, boardId }) => {
         }
     }, [quill]);
 
-    const description = data.description;
+    // const description = data.description;
 
     const handleCreateLabel = () => {
         addDoc(collection(db, "label"), {
@@ -201,7 +201,7 @@ const CardVisit = ({ cardId, role, boardId }) => {
                             ) : (
                                 <p className="min-h-[3rem] bg-blue-100 rounded-md p-3">
                                     {data.description ? (
-                                        <div dangerouslySetInnerHTML={{ __html: description }} />
+                                        <div dangerouslySetInnerHTML={{ __html: data.description }} />
                                     ) : (
                                         "No Card Description"
                                     )}

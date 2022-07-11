@@ -2,7 +2,7 @@ import { arrayRemove, arrayUnion, deleteDoc, doc, updateDoc } from "firebase/fir
 import { useRef, useState } from "react";
 import { db } from "../firebase-config";
 
-const LabelColor = ({ color, labels, cardId, labelName, labelId, ref }) => {
+const LabelColor = ({ color, labels, cardId, labelName, labelId }) => {
     var stringClass = `w-52 h-6 ${color} rounded-sm hover:border-2 hover:border-gray-300 relative text-white px-2`;
     // var stringClass = `w-52 h-6 bg-[#EB1D36] rounded-sm hover:border-2 hover:border-gray-300 relative`;
 
@@ -19,6 +19,37 @@ const LabelColor = ({ color, labels, cardId, labelName, labelId, ref }) => {
             name: name,
             color: selectedColor,
         })
+
+        console.log(labels)
+        if (!(labels && labels.includes(labelId))) {
+            updateDoc(colRef, {
+                labels: arrayUnion(labelId),
+            });
+            updateDoc(colRef, {
+                labels: arrayRemove(labelId),
+            });
+
+        }
+        else {
+            updateDoc(colRef, {
+                labels: arrayRemove(labelId),
+            });
+            updateDoc(colRef, {
+                labels: arrayUnion(labelId),
+            });
+        }
+
+        // if (!(labels && labels.includes(labelId))) {
+        //     updateDoc(colRef, {
+        //         labels: arrayUnion(labelId),
+        //     });
+
+        // }
+        // else {
+        //     updateDoc(colRef, {
+        //         labels: arrayRemove(labelId),
+        //     });
+        // }
         ref2.current.classList.toggle("hidden");
     }
 
@@ -51,11 +82,20 @@ const LabelColor = ({ color, labels, cardId, labelName, labelId, ref }) => {
                             updateDoc(colRef, {
                                 labels: arrayUnion(labelId),
                             });
+                            const newData = {
+                                card: arrayUnion(cardId)
+                            }
+                            updateDoc(doc(db, "label", labelId), newData)
+
                         }
                         else {
                             updateDoc(colRef, {
                                 labels: arrayRemove(labelId),
                             });
+                            const newData = {
+                                card: arrayRemove(cardId)
+                            }
+                            updateDoc(doc(db, "label", labelId), newData)
                         }
                     }}
                     className={stringClass}

@@ -15,7 +15,7 @@ const Public = () => {
     const auth = getAuth()
 
     const location = useLocation()
-    const [favorite, setFavorite] = useState([])
+    const [favorite, setFavorite] = useState()
     const favoriteRef = collection(db, "favorite")
 
     useEffect(() => {
@@ -87,8 +87,7 @@ const Public = () => {
                             <>
 
                                 <div className="w-[270px] h-[150px] rounded-xl overflow-hidden shadow-lg m-6 border relative" key={board.id}>
-
-                                    {favorite.data().boardId && favorite.data().boardId.includes(board.id) ? <svg onClick={() => {
+                                    {favorite?.data().boardId && favorite.data().boardId.includes(board.id) ? <svg onClick={() => {
                                         if (favorite.data().boardId && favorite.data().boardId.includes(board.id)) {
                                             updateDoc(doc(db, "favorite", favorite.id), {
                                                 boardId: arrayRemove(board.id)

@@ -11,7 +11,7 @@ const ListFavoriteBoard = () => {
 
 
     const [boardList, setBoardList] = useState([])
-    const [favorite, setFavorite] = useState([])
+    const [favorite, setFavorite] = useState()
 
     const auth = getAuth()
 
@@ -62,7 +62,7 @@ const ListFavoriteBoard = () => {
                             <>
                                 <div className="w-[270px] h-[150px] rounded-xl overflow-hidden shadow-lg m-6 border relative" key={board.id}>
 
-                                    {favorite && favorite.data().boardId.includes(board.id) ? <svg onClick={() => {
+                                    {favorite?.data().boardId && favorite.data().boardId.includes(board.id) ? <svg onClick={() => {
                                         if (favorite.data().boardId && favorite.data().boardId.includes(board.id)) {
                                             updateDoc(doc(db, "favorite", favorite.id), {
                                                 boardId: arrayRemove(board.id)
